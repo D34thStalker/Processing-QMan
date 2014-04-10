@@ -1,5 +1,12 @@
+import sprites.utils.*;
+import sprites.maths.*;
+import sprites.*;
+
 // Need G4P library
 import g4p_controls.*;
+
+import java.awt.Font;
+import java.awt.*;
 
 
 public void setup(){
@@ -18,5 +25,5 @@ public void draw(){
 // Use this method to add additional statements
 // to customise the GUI controls
 public void customGUI(){
-
+   title.setFont(new Font("Dialog", Font.PLAIN, 24));
 }
