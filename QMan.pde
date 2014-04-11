@@ -45,6 +45,7 @@ public void setup() {
   setupSprinklers();
 }
 
+boolean flip = true;
 public void draw() {
   background(230);
   stroke( #cccccc );
@@ -57,6 +58,7 @@ public void draw() {
   for (int i = 0; i < tiles.size(); i++) {
     Tile t = (Tile)tiles.get(i);
     t.draw();
+    if (flip)t.flipTile();
   }
   for (int i = 0; i < sprinklers.size(); i++) {
     Sprite s = (Sprite)sprinklers.get(i);
@@ -98,8 +100,8 @@ void setupSprinklers() {
     for ( int y = min_y; y < max_y; y+=grid_size ) {
       if (first) x = 32;
       else x = width - 31;
-      Sprite s = new Sprite(this,"sprinkler.jpg", 1, 1, 100);
-      s.setXY(x,y+32);
+      Sprite s = new Sprite(this, "sprinkler.jpg", 1, 1, 100);
+      s.setXY(x, y+32);
       sprinklers.add(s); 
       first = !first;
     }
@@ -122,6 +124,10 @@ void keyPressed() {
   case 'R':
     fillGridArray();
     createTileArray();
+    break;
+  case 'f':
+  case 'F':
+    flip = !flip;
     break;
   }
 }
