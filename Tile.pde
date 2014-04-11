@@ -15,6 +15,7 @@ class Tile {
   }
 
   void draw() {
+    rectMode(CORNER);
     stroke(#000000);
     fill(tileColor);
     rect(loc.x, loc.y, w, h);

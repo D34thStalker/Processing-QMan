@@ -16,6 +16,8 @@
 
 public void startBtn_click1(GImageButton source, GEvent event) { //_CODE_:startBtn:903391:
   startGame();
+  title.setText("");
+  
   println("startBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
 } //_CODE_:startBtn:903391:
 
@@ -30,7 +32,7 @@ public void createGUI(){
   if(frame != null)
     frame.setTitle("QMan");
   title = new GLabel(this, 0, 40, 640, 40);
-  title.setText("Adventures of Qman");
+  title.setText("Adventures of QMan");
   title.setTextBold();
   title.setLocalColorScheme(GCScheme.RED_SCHEME);
   title.setOpaque(false);
