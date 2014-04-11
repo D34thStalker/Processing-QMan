@@ -11,8 +11,6 @@ import java.awt.*;
 
 Sprite tBase;
 
-
-
 int min_x = 64;
 int min_y = 100;
 int max_x = 576;
@@ -45,7 +43,6 @@ public void setup() {
   setupSprinklers();
 }
 
-boolean flip = true;
 public void draw() {
   background(230);
   stroke( #cccccc );
@@ -58,7 +55,6 @@ public void draw() {
   for (int i = 0; i < tiles.size(); i++) {
     Tile t = (Tile)tiles.get(i);
     t.draw();
-    if (flip)t.flipTile();
   }
   for (int i = 0; i < sprinklers.size(); i++) {
     Sprite s = (Sprite)sprinklers.get(i);
@@ -96,15 +92,15 @@ void setupSprinklers() {
   boolean first = true;
   int x = 0;
   // Create the Sprinklers
-  for ( int i = 0; i < 20; i++ ) {
+  for ( int i = 0; i < 2; i++ ) {
     for ( int y = min_y; y < max_y; y+=grid_size ) {
       if (first) x = 32;
       else x = width - 31;
       Sprite s = new Sprite(this, "sprinkler.jpg", 1, 1, 100);
       s.setXY(x, y+32);
       sprinklers.add(s); 
-      first = !first;
     }
+    first = !first;
   }
 }
 
@@ -124,10 +120,6 @@ void keyPressed() {
   case 'R':
     fillGridArray();
     createTileArray();
-    break;
-  case 'f':
-  case 'F':
-    flip = !flip;
     break;
   }
 }
