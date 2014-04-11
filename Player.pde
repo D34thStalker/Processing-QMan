@@ -37,6 +37,7 @@ class Player {
       }
       println("North");
       loc.y-=grid_size;
+      checkIfOnTile();
       break;
       //south
     case 2:
@@ -45,6 +46,7 @@ class Player {
       }
       println("South");
       loc.y+=grid_size;
+      checkIfOnTile();
       break;
       //west
     case 3:
@@ -53,6 +55,7 @@ class Player {
       }
       println("West");
       loc.x-=grid_size;
+      checkIfOnTile();
       break;
       //east
     case 4:
@@ -61,6 +64,7 @@ class Player {
       }
       println("East");
       loc.x+=grid_size;
+      checkIfOnTile();
       break;
     }
   }

@@ -150,11 +150,7 @@ void checkIfOnTile() {
     if ((( playLoc.x > tileLoc.x )           && ( playLoc.x < tileLoc.x + t.w )           && ( playLoc.y > tileLoc.y )           && ( playLoc.y < tileLoc.y + t.h )) ||
       (( playLoc.x > tileLoc.x )           && ( playLoc.x < tileLoc.x + t.w )           && ( playLoc.y + player.h > tileLoc.y ) && ( playLoc.y + player.h < tileLoc.y + t.h )) ||
       (( playLoc.x + player.w > tileLoc.x ) && ( playLoc.x + player.w < tileLoc.x + t.w ) && ( playLoc.y + player.h > tileLoc.y ) && ( playLoc.y + player.h < tileLoc.y + t.h )) ||
-      (( playLoc.x + player.w > tileLoc.x ) && ( playLoc.x + player.w < tileLoc.x + t.w ) && ( playLoc.y > tileLoc.y )           && ( playLoc.y < tileLoc.y + t.h )) ||
-      (( tileLoc.x > playLoc.x )         && ( tileLoc.x < playLoc.x + player.w )         && ( tileLoc.y > playLoc.y )         && ( tileLoc.y < playLoc.y + player.h )) ||
-      (( tileLoc.x > playLoc.x )         && ( tileLoc.x < playLoc.x + player.w )         && ( tileLoc.y + t.h > playLoc.y ) && ( tileLoc.y + t.h < playLoc.y + player.h )) ||
-      (( tileLoc.x + t.w > playLoc.x ) && ( tileLoc.x + t.w < playLoc.x + player.w ) && ( tileLoc.y + t.h > playLoc.y ) && ( tileLoc.y + t.h < playLoc.y + player.h )) ||
-      (( tileLoc.x + t.w > playLoc.x ) && ( tileLoc.x + t.w < playLoc.x + player.w ) && ( tileLoc.y > playLoc.y )         && (tileLoc.y < playLoc.y + player.h ))) {
+      (( playLoc.x + player.w > tileLoc.x ) && ( playLoc.x + player.w < tileLoc.x + t.w ) && ( playLoc.y > tileLoc.y )           && ( playLoc.y < tileLoc.y + t.h ))) {
       println("On Tile " + i);
       t.flipTile();
     }
@@ -171,25 +167,21 @@ void keyPressed() {
   case 'W':
     if (playing)
       player.move(1);
-      checkIfOnTile();
     break;
   case 's':
   case 'S':
     if (playing)
       player.move(2);
-      checkIfOnTile();
     break;
   case 'a':
   case 'A':
     if (playing)
       player.move(3);
-      checkIfOnTile();
     break;
   case 'd':
   case 'D':
     if (playing)
       player.move(4);
-      checkIfOnTile();
     break;
   }
   //  switch(keyCode) {
