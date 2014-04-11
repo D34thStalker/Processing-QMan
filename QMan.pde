@@ -42,6 +42,7 @@ public void setup() {
   createGUI();
   customGUI();
   // Place your setup code here
+  background(loadImage("bg.jpg"));
 }
 
 void playGame() {
@@ -63,7 +64,7 @@ void setupGame() {
 }
 
 public void draw() {
-  background(230);
+ // background(230);
   if (playing) {
     background(#0000ff);
     rectMode(CORNER);
