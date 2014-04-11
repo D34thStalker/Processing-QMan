@@ -16,8 +16,8 @@
 
 public void startBtn_click1(GImageButton source, GEvent event) { //_CODE_:startBtn:903391:
   startGame();
-  title.setText("");
-  
+  title.setVisible(false);
+  startBtn.setVisible(false);
   println("startBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
 } //_CODE_:startBtn:903391:
 
