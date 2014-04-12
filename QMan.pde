@@ -21,19 +21,16 @@ final int WEST = 1;
 final int SOUTH = 2;
 final int EAST = 3;
 
-Player player;
-
-ArrayList tiles;
 
 int tileCount = 50;
 
-// Actual amount of tiles and locations
-ArrayList allTilesOnMap;
+Player player;
+ArrayList<Tile> tiles;
+// Actual number of tiles and locations
+ArrayList<PVector> allTilesOnMap;
 // Available tiles after giving to the flippable
-ArrayList allAvailableTilesOnMap;
-
-
-ArrayList sprinklers;
+ArrayList<PVector> allAvailableTilesOnMap;
+ArrayList<Sprite> sprinklers;
 
 boolean playing = false;
 
@@ -69,18 +66,15 @@ public void draw() {
     background(#0000ff);
     rectMode(CORNER);
     stroke( #cccccc );
-    for (int i = 0; i < allAvailableTilesOnMap.size(); i++) {
+    for (PVector e : allAvailableTilesOnMap) {
       stroke(#000000);
       fill( #cccccc );
-      PVector e = (PVector)allAvailableTilesOnMap.get(i);
       rect(e.x, e.y, 64, 64);
     }
-    for (int i = 0; i < tiles.size(); i++) {
-      Tile t = (Tile)tiles.get(i);
+    for (Tile t : tiles) { 
       t.draw();
     }
-    for (int i = 0; i < sprinklers.size(); i++) {
-      Sprite s = (Sprite)sprinklers.get(i);
+    for (Sprite s : sprinklers) {
       s.draw();
     }
 
@@ -93,8 +87,8 @@ public void draw() {
 }
 
 void fillGridArray() {
-  allTilesOnMap = new ArrayList();
-  allAvailableTilesOnMap = new ArrayList();
+  allTilesOnMap = new ArrayList<PVector>();
+  allAvailableTilesOnMap = new ArrayList<PVector>();
   for ( int x=min_x; x<max_x; x+=grid_size ) {
     for ( int y=min_y; y<max_y; y+=grid_size ) {
       allTilesOnMap.add(new PVector(x, y));
@@ -104,11 +98,11 @@ void fillGridArray() {
 }
 
 void createTileArray() {
-  tiles = new ArrayList();
+  tiles = new ArrayList<Tile>();
   // Create the Tiles
   for (int i = 0; i < tileCount; i++) {
     int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
-    PVector randomPosition = (PVector)allAvailableTilesOnMap.get(randomIndex);
+    PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomIndex);
     Tile t = new Tile(randomPosition);
     tiles.add(t);
@@ -167,22 +161,22 @@ void keyPressed() {
   case 'w':
   case 'W':
     if (playing)
-      player.move(1);
+      player.move(NORTH);
     break;
   case 's':
   case 'S':
     if (playing)
-      player.move(2);
+      player.move(SOUTH);
     break;
   case 'a':
   case 'A':
     if (playing)
-      player.move(3);
+      player.move(WEST);
     break;
   case 'd':
   case 'D':
     if (playing)
-      player.move(4);
+      player.move(EAST);
     break;
   }
   //  switch(keyCode) {

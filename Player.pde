@@ -3,6 +3,11 @@ class Player {
   int w;
   int h;
 
+  final int NORTH = 0;
+  final int WEST = 1;
+  final int SOUTH = 2;
+  final int EAST = 3;
+
   Player(PVector _loc) {
     loc = _loc;
     w = 48;
@@ -31,7 +36,7 @@ class Player {
   void move(int direction) {
     switch(direction) {
       //north
-    case 1:
+    case NORTH:
       if (loc.y - h < min_y) {
         return;
       }
@@ -44,7 +49,7 @@ class Player {
       checkIfOnTile();
       break;
       //south
-    case 2:
+    case SOUTH:
       if (loc.y + h > max_y) {
         return;
       }
@@ -57,7 +62,7 @@ class Player {
       checkIfOnTile();
       break;
       //west
-    case 3:
+    case WEST:
       if (loc.x - grid_size - w < 0) {
         return;
       }
@@ -70,7 +75,7 @@ class Player {
       checkIfOnTile();
       break;
       //east
-    case 4:
+    case EAST:
       if (loc.x + grid_size + w > width - grid_size) {
         return;
       }
