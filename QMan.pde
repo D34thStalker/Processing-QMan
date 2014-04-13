@@ -21,8 +21,8 @@ final int WEST = 1;
 final int SOUTH = 2;
 final int EAST = 3;
 
-
 int tileCount = 50;
+int tilesFlipped = 0;
 
 Player player;
 ArrayList<Tile> tiles;
@@ -61,7 +61,7 @@ void setupGame() {
 }
 
 public void draw() {
- // background(230);
+  // background(230);
   if (playing) {
     background(#0000ff);
     rectMode(CORNER);
@@ -83,6 +83,8 @@ public void draw() {
     //    tBase.draw();
 
     player.draw();
+    
+    checkIfWon();
   }
 }
 
@@ -135,6 +137,13 @@ public void customGUI() {
 public void startGame() {
   println("started");  
   playGame();
+}
+
+void checkIfWon() {
+  if (tilesFlipped == tileCount) {
+    println("YOU WIN!");
+    playing = false;
+  }
 }
 
 void checkIfOnTile() {

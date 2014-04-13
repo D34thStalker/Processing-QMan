@@ -51,10 +51,14 @@ class Tile {
 
   void flipTile() {
     flipped = !flipped;
-    if (flipped)
+    if (flipped) {
       setColor(#00ff00);
-    else 
+      tilesFlipped++;
+    }
+    else {
       setColor(#ff0000);
+      tilesFlipped--;
+    }
   }
 }
 
