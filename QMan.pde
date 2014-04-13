@@ -25,6 +25,8 @@ int tileCount = 50;
 int tilesFlipped = 0;
 
 Player player;
+ArrayList<Enemy> enemies;
+int moveTimer = 0;
 ArrayList<Tile> tiles;
 // Actual number of tiles and locations
 ArrayList<PVector> allTilesOnMap;
@@ -36,6 +38,7 @@ boolean playing = false;
 
 public void setup() {
   size(640, 640, JAVA2D);
+  frameRate(30);
   createGUI();
   customGUI();
   // Place your setup code here
@@ -58,6 +61,9 @@ void setupGame() {
   //  Tile t = (Tile)tiles.get(randomIndex);
   //  PVector randomPosition = t.getLoc();
   player = new Player(new PVector(64, 100));
+  enemies = new ArrayList<Enemy>();
+  enemies.add(new Enemy(new PVector(512, 100)));
+  enemies.add(new Enemy(new PVector(512, 484)));
 }
 
 public void draw() {
@@ -83,7 +89,13 @@ public void draw() {
     //    tBase.draw();
 
     player.draw();
-    
+    for (Enemy e : enemies) { 
+      if (e.moveTimer == 0) e.chase(player.getLoc());
+      e.moveTimer++;
+      if (e.moveTimer >= 20) e.moveTimer = 0;
+      e.draw();
+    }
+
     checkIfWon();
   }
 }

@@ -1,18 +1,22 @@
-class Player {
+class Enemy {
   PVector loc;
   int w;
   int h;
 
-  Player(PVector _loc) {
+  int moveTimer;
+
+  Enemy(PVector _loc) {
     loc = _loc;
     w = 48;
     h = 48;
+
+    moveTimer = 0;
   }
 
   void draw() {
     rectMode(CENTER);
     stroke(#000000);
-    fill(#ff00ff);
+    fill(#887700);
     rect(loc.x+32, loc.y+32, w, h);
   }
 
@@ -28,6 +32,14 @@ class Player {
     return h;
   }
 
+  int getMoveTimer() {
+    return moveTimer;
+  }
+
+  void setMoveTimer(int value) {
+    moveTimer = value;
+  }
+
   void move(int direction) {
     switch(direction) {
       //north
@@ -40,7 +52,6 @@ class Player {
       }
       println("North");
       loc.y-=grid_size;
-      checkIfOnTile();
       break;
       //south
     case SOUTH:
@@ -52,7 +63,6 @@ class Player {
       }
       println("South");
       loc.y+=grid_size;
-      checkIfOnTile();
       break;
       //west
     case WEST:
@@ -64,7 +74,6 @@ class Player {
       }
       println("West");
       loc.x-=grid_size;
-      checkIfOnTile();
       break;
       //east
     case EAST:
@@ -76,7 +85,6 @@ class Player {
       }
       println("East");
       loc.x+=grid_size;
-      checkIfOnTile();
       break;
     }
   }
@@ -89,6 +97,17 @@ class Player {
       return true;
     }
     return false;
+  }
+
+  void chase(PVector other) {
+    if (other.x < loc.x)
+      move(WEST);
+    if (other.x > loc.x)
+      move(EAST);
+    if (other.y < loc.y)
+      move(NORTH);
+    if (other.y > loc.y)
+      move(SOUTH);
   }
 }
 
