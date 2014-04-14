@@ -60,10 +60,10 @@ void setupGame() {
   //  int randomIndex = (int)(random(0, tiles.size()));
   //  Tile t = (Tile)tiles.get(randomIndex);
   //  PVector randomPosition = t.getLoc();
-  player = new Player(new PVector(64, 100), new Sprite(this,"QMan.png",1,1,100));
+  player = new Player(new PVector(64, 100), new Sprite(this, "QMan.png", 1, 1, 100));
   enemies = new ArrayList<Enemy>();
-  enemies.add(new Enemy(new PVector(512, 100), new Sprite(this,"Enemy.png",1,1,100)));
-  enemies.add(new Enemy(new PVector(512, 484), new Sprite(this,"Enemy.png",1,1,100)));
+  enemies.add(new Enemy(new PVector(512, 100), new Sprite(this, "Enemy.png", 1, 1, 100)));
+  enemies.add(new Enemy(new PVector(512, 484), new Sprite(this, "Enemy.png", 1, 1, 100)));
 }
 
 public void draw() {
@@ -97,6 +97,7 @@ public void draw() {
     }
 
     checkIfWon();
+    checkIfLost();
   }
 }
 
@@ -155,6 +156,15 @@ void checkIfWon() {
   if (tilesFlipped == tileCount) {
     println("YOU WIN!");
     playing = false;
+  }
+}
+
+void checkIfLost() {
+  for ( Enemy e : enemies ) {
+    if ( e.getSprite().bb_collision(player.getSprite()) ) {
+      println("YOU LOSE!");
+      playing = false;
+    }
   }
 }
 

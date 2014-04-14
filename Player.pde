@@ -15,6 +15,10 @@ class Player {
     s.setXY(loc.x+32,loc.y+32);
     s.draw();
   }
+  
+  Sprite getSprite() {
+   return s; 
+  }
 
   PVector getLoc() {
     return loc;
