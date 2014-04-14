@@ -2,18 +2,18 @@ class Player {
   PVector loc;
   int w;
   int h;
+  Sprite s;
 
-  Player(PVector _loc) {
+  Player(PVector _loc, Sprite _s) {
     loc = _loc;
     w = 48;
     h = 48;
+    s = _s;
   }
 
   void draw() {
-    rectMode(CENTER);
-    stroke(#000000);
-    fill(#ff00ff);
-    rect(loc.x+32, loc.y+32, w, h);
+    s.setXY(loc.x+32,loc.y+32);
+    s.draw();
   }
 
   PVector getLoc() {

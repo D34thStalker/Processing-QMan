@@ -60,10 +60,10 @@ void setupGame() {
   //  int randomIndex = (int)(random(0, tiles.size()));
   //  Tile t = (Tile)tiles.get(randomIndex);
   //  PVector randomPosition = t.getLoc();
-  player = new Player(new PVector(64, 100));
+  player = new Player(new PVector(64, 100), new Sprite(this,"QMan.png",1,1,100));
   enemies = new ArrayList<Enemy>();
-  enemies.add(new Enemy(new PVector(512, 100)));
-  enemies.add(new Enemy(new PVector(512, 484)));
+  enemies.add(new Enemy(new PVector(512, 100), new Sprite(this,"Enemy.png",1,1,100)));
+  enemies.add(new Enemy(new PVector(512, 484), new Sprite(this,"Enemy.png",1,1,100)));
 }
 
 public void draw() {
@@ -159,15 +159,13 @@ void checkIfWon() {
 }
 
 void checkIfOnTile() {
-  for ( int i = 0; i < tiles.size(); i++ ) {
-    Tile t = (Tile)tiles.get(i);
+  for ( Tile t : tiles ) {
     PVector playLoc = player.getLoc();
     PVector tileLoc = t.getLoc();
     if ((( playLoc.x > tileLoc.x )           && ( playLoc.x < tileLoc.x + t.w )           && ( playLoc.y > tileLoc.y )           && ( playLoc.y < tileLoc.y + t.h )) ||
       (( playLoc.x > tileLoc.x )           && ( playLoc.x < tileLoc.x + t.w )           && ( playLoc.y + player.h > tileLoc.y ) && ( playLoc.y + player.h < tileLoc.y + t.h )) ||
       (( playLoc.x + player.w > tileLoc.x ) && ( playLoc.x + player.w < tileLoc.x + t.w ) && ( playLoc.y + player.h > tileLoc.y ) && ( playLoc.y + player.h < tileLoc.y + t.h )) ||
       (( playLoc.x + player.w > tileLoc.x ) && ( playLoc.x + player.w < tileLoc.x + t.w ) && ( playLoc.y > tileLoc.y )           && ( playLoc.y < tileLoc.y + t.h ))) {
-      println("On Tile " + i);
       t.flipTile();
     }
   }

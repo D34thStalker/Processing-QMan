@@ -2,22 +2,22 @@ class Enemy {
   PVector loc;
   int w;
   int h;
+  Sprite s;
 
   int moveTimer;
 
-  Enemy(PVector _loc) {
+  Enemy(PVector _loc, Sprite _s) {
     loc = _loc;
     w = 48;
     h = 48;
-
+    s = _s;
+    
     moveTimer = 0;
   }
 
   void draw() {
-    rectMode(CENTER);
-    stroke(#000000);
-    fill(#887700);
-    rect(loc.x+32, loc.y+32, w, h);
+    s.setXY(loc.x+32,loc.y+32);
+    s.draw();
   }
 
   PVector getLoc() {
