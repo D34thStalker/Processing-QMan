@@ -22,7 +22,7 @@ final int SOUTH = 2;
 final int EAST = 3;
 
 int tileCount = 50;
-int tilesFlipped = 0;
+int tilesFlipped;
 
 Player player;
 ArrayList<Enemy> enemies;
@@ -56,6 +56,8 @@ void setupGame() {
   fillGridArray();
   createTileArray();
   setupSprinklers();
+
+  tilesFlipped = 0;
 
   //  int randomIndex = (int)(random(0, tiles.size()));
   //  Tile t = (Tile)tiles.get(randomIndex);
@@ -185,27 +187,33 @@ void keyPressed() {
   switch(key) {
   case 'r':
   case 'R':
-    setupGame();
+    playGame();
     break;
   case 'w':
   case 'W':
     if (playing)
       player.move(NORTH);
+      checkIfOnTile();
     break;
   case 's':
   case 'S':
     if (playing)
       player.move(SOUTH);
+      checkIfOnTile();
     break;
   case 'a':
   case 'A':
     if (playing)
       player.move(WEST);
+      checkIfOnTile();
     break;
   case 'd':
   case 'D':
     if (playing)
       player.move(EAST);
+      checkIfOnTile();
+    break;
+  default:
     break;
   }
   //  switch(keyCode) {
