@@ -90,7 +90,7 @@ public void draw() {
 
     player.draw();
     for (Enemy e : enemies) { 
-      if (e.moveTimer == 0) e.chase(player.getLoc());
+      if (e.moveTimer == 0) e.chase(player);
       e.moveTimer++;
       if (e.moveTimer >= 20) e.moveTimer = 0;
       e.draw();
