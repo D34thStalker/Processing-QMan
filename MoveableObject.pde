@@ -44,7 +44,6 @@ class MoveableObject {
       }
       println("North");
       loc.y-=grid_size;
-      checkIfOnTile();
       break;
       //south
     case SOUTH:
@@ -56,7 +55,6 @@ class MoveableObject {
       }
       println("South");
       loc.y+=grid_size;
-      checkIfOnTile();
       break;
       //west
     case WEST:
@@ -68,7 +66,6 @@ class MoveableObject {
       }
       println("West");
       loc.x-=grid_size;
-      checkIfOnTile();
       break;
       //east
     case EAST:
@@ -80,7 +77,6 @@ class MoveableObject {
       }
       println("East");
       loc.x+=grid_size;
-      checkIfOnTile();
       break;
     }
   }
