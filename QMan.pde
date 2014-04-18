@@ -38,7 +38,7 @@ boolean playing = false;
 
 public void setup() {
   size(640, 640, JAVA2D);
-  frameRate(30);
+  frameRate(60);
   createGUI();
   customGUI();
   // Place your setup code here
@@ -94,7 +94,7 @@ public void draw() {
     for (Enemy e : enemies) { 
       if (e.moveTimer == 0) e.chase(player);
       e.moveTimer++;
-      if (e.moveTimer >= 20) e.moveTimer = 0;
+      if (e.moveTimer >= 60) e.moveTimer = 0;
       e.draw();
     }
 
