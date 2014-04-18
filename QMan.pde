@@ -191,27 +191,39 @@ void keyPressed() {
     break;
   case 'w':
   case 'W':
-    if (playing)
-      player.move(NORTH);
-      checkIfOnTile();
+    if (playing) {
+      if (!player.willHit(NORTH)) {
+        player.move(NORTH);
+        checkIfOnTile();
+      }
+    }
     break;
   case 's':
   case 'S':
-    if (playing)
-      player.move(SOUTH);
-      checkIfOnTile();
+    if (playing) {
+      if (!player.willHit(SOUTH)) {
+        player.move(SOUTH);
+        checkIfOnTile();
+      }
+    }
     break;
   case 'a':
   case 'A':
-    if (playing)
-      player.move(WEST);
-      checkIfOnTile();
+    if (playing) {
+      if (!player.willHit(WEST)) {
+        player.move(WEST);
+        checkIfOnTile();
+      }
+    }
     break;
   case 'd':
   case 'D':
-    if (playing)
-      player.move(EAST);
-      checkIfOnTile();
+    if (playing) {
+      if (!player.willHit(EAST)) {
+        player.move(EAST);
+        checkIfOnTile();
+      }
+    }
     break;
   default:
     break;
