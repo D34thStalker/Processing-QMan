@@ -12,12 +12,12 @@ class MoveableObject {
   }
 
   public void draw() {
-    sprite.setXY(loc.x+32,loc.y+32);
+    sprite.setXY(loc.x+32, loc.y+32);
     sprite.draw();
   }
-  
+
   public Sprite getSprite() {
-   return sprite; 
+    return sprite;
   }
 
   public PVector getLoc() {
@@ -57,6 +57,7 @@ class MoveableObject {
     }
   }
 
+  // FOR NON SPRITE COLLISION
   public boolean checkIfWillCollide(float x, float y, PVector o) {
     if ((( x > o.x )           && ( x < o.x + 64 )           && ( y > o.y )           && ( y < o.y + 64 )) ||
       (( x > o.x )           && ( x < o.x + 64 )           && ( y + h > o.y ) && ( y + h < o.y + 64)) ||
@@ -66,7 +67,7 @@ class MoveableObject {
     }
     return false;
   }
-  
+
   public boolean willHit(int direction) {
     switch(direction) {
       //north
@@ -109,3 +110,4 @@ class MoveableObject {
     return false;
   }
 }
+

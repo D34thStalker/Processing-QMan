@@ -8,7 +8,11 @@ import g4p_controls.*;
 import java.awt.Font;
 import java.awt.*;
 
-Sprite tBase;
+Nut nut;
+boolean isNut = false;
+
+Sprite squirrel;
+boolean stunEnemies = false;
 
 int min_x = 64;
 int min_y = 100;
@@ -30,7 +34,7 @@ int moveTimer = 0;
 ArrayList<Tile> tiles;
 // Actual number of tiles and locations
 ArrayList<PVector> allTilesOnMap;
-// Available tiles after giving to the flippable
+// Available tiles after giving to the flippable ( OBSTACLES )
 ArrayList<PVector> allAvailableTilesOnMap;
 ArrayList<Sprite> sprinklers;
 
@@ -51,13 +55,15 @@ void playGame() {
 }
 
 void setupGame() {
-  tBase = new Sprite(this, "target.png", 1, 1, 100);
   //tBase.setFrameSequence(5 * 8 + 7, 5 * 8);
   fillGridArray();
   createTileArray();
   setupSprinklers();
 
   tilesFlipped = 0;
+  isNut = false;
+  stunEnemies = false;
+  stunTimer = 0;
 
   //  int randomIndex = (int)(random(0, tiles.size()));
   //  Tile t = (Tile)tiles.get(randomIndex);
@@ -67,7 +73,8 @@ void setupGame() {
   enemies.add(new Enemy(new PVector(512, 100), new Sprite(this, "Enemy.png", 1, 1, 100)));
   enemies.add(new Enemy(new PVector(512, 484), new Sprite(this, "Enemy.png", 1, 1, 100)));
 }
-
+int x = 0;
+int sCounter = 0;
 public void draw() {
   // background(230);
   if (playing) {
@@ -86,18 +93,20 @@ public void draw() {
       s.draw();
     }
 
-    //    tBase.setXY(96, 132);
-    //    tBase.setRot(0);
-    //    tBase.draw();
+    if (isNut) nut.draw();
 
     player.draw();
     for (Enemy e : enemies) { 
-      if (e.moveTimer == 0) e.chase(player);
+      if (e.moveTimer == 0 && !stunEnemies) e.chase(player);
       e.moveTimer++;
       if (e.moveTimer >= 60) e.moveTimer = 0;
       e.draw();
     }
 
+    if (stunEnemies) stunTheEnemies();
+
+
+    checkIfHitNut();
     checkIfWon();
     checkIfLost();
   }
@@ -183,6 +192,48 @@ void checkIfOnTile() {
   }
 }
 
+void checkIfHitNut() {
+  if (!isNut) return;
+  if ( player.getSprite().bb_collision(nut.getSprite()) ) {
+    println("Got a Nut!");
+    stunEnemies = true;
+    isNut = false;
+    nut = null;
+    squirrel = new Sprite(this, "squirrel.png", 1, 1, 100);
+  }
+}
+
+
+void dropNut() {
+  if (stunEnemies) return;
+  int randomIndex = (int)(random(0, tiles.size()));
+  PVector randomPosition = tiles.get(randomIndex).getLoc();
+  nut = new Nut(randomPosition, new Sprite(this, "sprinkler.jpg", 1, 1, 100));
+  isNut = true;
+}
+
+int stunTimer = 0;
+void stunTheEnemies() {
+  if (stunTimer == 150) {
+    stunTimer = 0;
+    stunEnemies = false; 
+    squirrel = null;
+    return;
+  }
+  if (sCounter == 0)
+    x+= 10;
+  sCounter++;
+  if (sCounter >= 30)
+    sCounter = 0;
+
+  for ( Enemy e : enemies ) {
+    squirrel.setXY(e.getLoc().x+32, e.getLoc().y+32);
+    squirrel.setRot(x);
+    squirrel.draw();
+  }
+  stunTimer++;
+}
+
 void keyPressed() {
   switch(key) {
   case 'r':
@@ -224,6 +275,10 @@ void keyPressed() {
         checkIfOnTile();
       }
     }
+    break;
+  case 'i':
+  case 'I':
+    if (!isNut) dropNut();
     break;
   default:
     break;
