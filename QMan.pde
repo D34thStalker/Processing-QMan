@@ -109,6 +109,8 @@ public void draw() {
     checkIfHitNut();
     checkIfWon();
     checkIfLost();
+
+    // println("tilesFlipped : " + tilesFlipped);
   }
 }
 
@@ -125,6 +127,14 @@ void fillGridArray() {
 
 void createTileArray() {
   tiles = new ArrayList<Tile>();
+ 
+  /*
+  ArrayList<Integer>colors = new ArrayList<Integer>();
+  colors.add(#7628ca);
+  colors.add(#ffff00);
+  colors.add(#ff8f00);
+  */
+
   // Create the Tiles
   for (int i = 0; i < tileCount; i++) {
     int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
@@ -187,7 +197,7 @@ void checkIfOnTile() {
       (( playLoc.x > tileLoc.x )           && ( playLoc.x < tileLoc.x + t.w )           && ( playLoc.y + player.h > tileLoc.y ) && ( playLoc.y + player.h < tileLoc.y + t.h )) ||
       (( playLoc.x + player.w > tileLoc.x ) && ( playLoc.x + player.w < tileLoc.x + t.w ) && ( playLoc.y + player.h > tileLoc.y ) && ( playLoc.y + player.h < tileLoc.y + t.h )) ||
       (( playLoc.x + player.w > tileLoc.x ) && ( playLoc.x + player.w < tileLoc.x + t.w ) && ( playLoc.y > tileLoc.y )           && ( playLoc.y < tileLoc.y + t.h ))) {
-      t.flipTile();
+      t.flip();
     }
   }
 }
