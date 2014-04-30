@@ -1,3 +1,5 @@
+import gifAnimation.*;
+
 import sprites.utils.*;
 import sprites.maths.*;
 import sprites.*;
@@ -13,6 +15,8 @@ boolean isNut = false;
 
 Sprite squirrel;
 boolean stunEnemies = false;
+
+Gif grass;
 
 int min_x = 64;
 int min_y = 100;
@@ -39,6 +43,11 @@ ArrayList<PVector> allAvailableTilesOnMap;
 ArrayList<Sprite> sprinklers;
 
 boolean playing = false;
+boolean win = false;
+
+int squirrelRot = 0;
+int sCounter = 0;
+int gCounter = 0;
 
 public void setup() {
   size(640, 640, JAVA2D);
@@ -55,7 +64,7 @@ void playGame() {
 }
 
 void setupGame() {
-  //tBase.setFrameSequence(5 * 8 + 7, 5 * 8);
+  grass = new Gif(this, "grass.gif");
   fillGridArray();
   createTileArray();
   setupSprinklers();
@@ -64,6 +73,9 @@ void setupGame() {
   isNut = false;
   stunEnemies = false;
   stunTimer = 0;
+  gCounter = 0;
+  sCounter = 0;
+  squirrelRot = 0;
 
   //  int randomIndex = (int)(random(0, tiles.size()));
   //  Tile t = (Tile)tiles.get(randomIndex);
@@ -73,29 +85,20 @@ void setupGame() {
   enemies.add(new Enemy(new PVector(512, 100), new Sprite(this, "Enemy.png", 1, 1, 100)));
   enemies.add(new Enemy(new PVector(512, 484), new Sprite(this, "Enemy.png", 1, 1, 100)));
 }
-int x = 0;
-int sCounter = 0;
+
 public void draw() {
   // background(230);
   if (playing) {
     background(#0000ff);
     rectMode(CORNER);
-    stroke( #cccccc );
-    for (PVector e : allAvailableTilesOnMap) {
-      stroke(#000000);
-      fill( #cccccc );
-      rect(e.x, e.y, 64, 64);
-    }
-    for (Tile t : tiles) { 
-      t.draw();
-    }
-    for (Sprite s : sprinklers) {
-      s.draw();
-    }
+    drawObstacles();
+    drawTiles();
+    drawSprinklers();
 
     if (isNut) nut.draw();
 
     player.draw();
+
     for (Enemy e : enemies) { 
       if (e.moveTimer == 0 && !stunEnemies) e.chase(player);
       e.moveTimer++;
@@ -104,14 +107,39 @@ public void draw() {
     }
 
     if (stunEnemies) stunTheEnemies();
-
-
     checkIfHitNut();
     checkIfWon();
     checkIfLost();
-
     // println("tilesFlipped : " + tilesFlipped);
   }
+  if (win) {
+    background(#0000ff);
+    drawObstacles();
+    drawSprinklers();
+    runGrassAnimation();
+    grass.play();
+    gCounter++;
+    if (gCounter >= 85) grass.stop();
+  }
+}
+
+void drawObstacles() {
+  for (PVector e : allAvailableTilesOnMap) {
+    stroke(#000000);
+    fill( #cccccc );
+    rect(e.x, e.y, 64, 64);
+  }
+}
+
+void drawTiles() {
+  for (Tile t : tiles)
+    t.draw();
+}
+
+
+void drawSprinklers() {
+  for (Sprite s : sprinklers)
+    s.draw();
 }
 
 void fillGridArray() {
@@ -127,13 +155,13 @@ void fillGridArray() {
 
 void createTileArray() {
   tiles = new ArrayList<Tile>();
- 
+
   /*
   ArrayList<Integer>colors = new ArrayList<Integer>();
-  colors.add(#7628ca);
-  colors.add(#ffff00);
-  colors.add(#ff8f00);
-  */
+   colors.add(#7628ca);
+   colors.add(#ffff00);
+   colors.add(#ff8f00);
+   */
 
   // Create the Tiles
   for (int i = 0; i < tileCount; i++) {
@@ -177,6 +205,7 @@ void checkIfWon() {
   if (tilesFlipped == tileCount) {
     println("YOU WIN!");
     playing = false;
+    win = true;
   }
 }
 
@@ -186,6 +215,12 @@ void checkIfLost() {
       println("YOU LOSE!");
       playing = false;
     }
+  }
+}
+
+void runGrassAnimation() {
+  for ( Tile t : tiles ) {
+    image(grass, t.getLoc().x+32, t.getLoc().y+32);
   }
 }
 
@@ -231,14 +266,14 @@ void stunTheEnemies() {
     return;
   }
   if (sCounter == 0)
-    x+= 10;
+    squirrelRot--;
   sCounter++;
-  if (sCounter >= 30)
+  if (sCounter >= 10)
     sCounter = 0;
 
   for ( Enemy e : enemies ) {
     squirrel.setXY(e.getLoc().x+32, e.getLoc().y+32);
-    squirrel.setRot(x);
+    squirrel.setRot(squirrelRot);
     squirrel.draw();
   }
   stunTimer++;
