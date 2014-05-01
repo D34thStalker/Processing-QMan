@@ -108,12 +108,12 @@ public void draw() {
 
     player.draw();
 
-//    for (Enemy e : enemies) { 
-//      if (e.moveTimer == 0 && !stunEnemies) e.chase(player);
-//      e.moveTimer++;
-//      if (e.moveTimer >= 60) e.moveTimer = 0;
-//      e.draw();
-//    }
+    for (Enemy e : enemies) { 
+      if (e.moveTimer == 0 && !stunEnemies) e.chase(player);
+      e.moveTimer++;
+      if (e.moveTimer >= 60) e.moveTimer = 0;
+      e.draw();
+    }
 
     if (stunEnemies) stunTheEnemies();
     checkIfHitNut();
@@ -282,7 +282,7 @@ void dropNut() {
   if (stunEnemies) return;
   int randomIndex = (int)(random(0, tiles.size()));
   PVector randomPosition = tiles.get(randomIndex).getLoc();
-  nut = new Nut(randomPosition, new Sprite(this, "I_C_Nut.png", 1, 1, 100));
+  nut = new Nut(randomPosition, new Sprite(this, "nut.png", 1, 1, 100));
   isNut = true;
 }
 
