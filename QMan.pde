@@ -57,15 +57,15 @@ public void setup() {
   customGUI();
   // Place your setup code here
   background(loadImage("bg.jpg"));
+
+  tiles = new ArrayList<Tile>();
+  enemies = new ArrayList<Enemy>();
+  obstacles = new ArrayList<Obstacle>();
+  sprinklers = new ArrayList<Sprinkler>();
+  grass = new Gif(this, "grass.gif");
 }
 
 void playGame() {
-  setupGame();
-  playing = true;
-}
-
-void setupGame() {
-  grass = new Gif(this, "grass.gif");
   fillGridArray();
   createObstacles();
   createTileArray();
@@ -79,13 +79,22 @@ void setupGame() {
   sCounter = 0;
   squirrelRot = 0;
 
-  //  int randomIndex = (int)(random(0, tiles.size()));
-  //  Tile t = (Tile)tiles.get(randomIndex);
-  //  PVector randomPosition = t.getLoc();
   player = new Player(new PVector(64, 100), new Sprite(this, "QMan.png", 1, 1, 100));
-  enemies = new ArrayList<Enemy>();
+
   enemies.add(new Enemy(new PVector(512, 100), new Sprite(this, "Enemy.png", 1, 1, 100)));
   enemies.add(new Enemy(new PVector(512, 484), new Sprite(this, "Enemy.png", 1, 1, 100)));
+  playing = true;
+}
+
+void resetGame() {
+  println("Reset");
+  allTilesOnMap.clear();
+  allAvailableTilesOnMap.clear();
+  enemies.clear();
+  tiles.clear();
+  obstacles.clear();
+  sprinklers.clear();
+  playGame();
 }
 
 public void draw() {
@@ -178,8 +187,6 @@ void fillGridArray() {
 }
 
 void createTileArray() {
-  tiles = new ArrayList<Tile>();
-
   /*
   ArrayList<Integer>colors = new ArrayList<Integer>();
    colors.add(#7628ca);
@@ -194,27 +201,17 @@ void createTileArray() {
 }
 
 void createObstacles() {
-  /****** CORNERS ********/
-  // x = 64, x = 512
-  // y = 100, y = 484
-  // 64, 100, 0
-  // 64, 484, 0
-  // 512, 100, 0
-  // 512, 484, 0
-  /***********************/
-  obstacles = new ArrayList<Obstacle>();
-
   for (int i = 0; i < obstacleCount; i++) {
+
     int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
     PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
-    allAvailableTilesOnMap.remove(randomIndex);
+    allAvailableTilesOnMap.remove(randomPosition);
     obstacles.add(new Obstacle(randomPosition, loadImage("obstacles/obstacle"+i+".png")));
   }
 }
 
 void setupSprinklers() {
   int num = 0;
-  sprinklers = new ArrayList<Sprinkler>();
   boolean first = true;
   int x = 0;
   // Create the Sprinklers
@@ -334,7 +331,7 @@ void keyPressed() {
   switch(key) {
   case 'r':
   case 'R':
-    playGame();
+    resetGame();
     break;
   case 'w':
   case 'W':
