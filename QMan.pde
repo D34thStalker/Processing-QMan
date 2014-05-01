@@ -29,12 +29,12 @@ final int WEST = 1;
 final int SOUTH = 2;
 final int EAST = 3;
 
-int tileCount = 50;
+int obstacleCount = 5;
+
 int tilesFlipped;
 
 Player player;
 ArrayList<Enemy> enemies;
-int moveTimer = 0;
 ArrayList<Tile> tiles;
 // Actual number of tiles and locations
 ArrayList<PVector> allTilesOnMap;
@@ -67,8 +67,8 @@ void playGame() {
 void setupGame() {
   grass = new Gif(this, "grass.gif");
   fillGridArray();
-  createTileArray();
   createObstacles();
+  createTileArray();
   setupSprinklers();
 
   tilesFlipped = 0;
@@ -172,6 +172,7 @@ void fillGridArray() {
     for ( int y=min_y; y<max_y; y+=grid_size ) {
       allTilesOnMap.add(new PVector(x, y));
       allAvailableTilesOnMap.add(new PVector(x, y));
+      //println(x + "," + y);
     }
   }
 }
@@ -187,23 +188,28 @@ void createTileArray() {
    */
 
   // Create the Tiles
-  for (int i = 0; i < tileCount; i++) {
-    int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
-    PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
-    allAvailableTilesOnMap.remove(randomIndex);
-    Tile t = new Tile(randomPosition);
-    tiles.add(t);
-  }
+  for (int i = 0; i < allAvailableTilesOnMap.size(); i++)
+    tiles.add(new Tile(new PVector(allAvailableTilesOnMap.get(i).x, allAvailableTilesOnMap.get(i).y)));
+  allAvailableTilesOnMap.clear();
 }
 
 void createObstacles() {
+  /****** CORNERS ********/
+  // x = 64, x = 512
+  // y = 100, y = 484
+  // 64, 100, 0
+  // 64, 484, 0
+  // 512, 100, 0
+  // 512, 484, 0
+  /***********************/
   obstacles = new ArrayList<Obstacle>();
 
-  for (int i = 0; i < allAvailableTilesOnMap.size(); i++) {
-    int num = (int)random(0, 3);
-    obstacles.add(new Obstacle(new PVector(allAvailableTilesOnMap.get(i).x, allAvailableTilesOnMap.get(i).y), loadImage("obstacles/obstacle"+num+".png")));
+  for (int i = 0; i < obstacleCount; i++) {
+    int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
+    PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
+    allAvailableTilesOnMap.remove(randomIndex);
+    obstacles.add(new Obstacle(randomPosition, loadImage("obstacles/obstacle"+i+".png")));
   }
-  allAvailableTilesOnMap.clear();
 }
 
 void setupSprinklers() {
@@ -241,7 +247,7 @@ public void startGame() {
 }
 
 void checkIfWon() {
-  if (tilesFlipped == tileCount) {
+  if (tilesFlipped == tiles.size()) {
     println("YOU WIN!");
     playing = false;
     win = true;
