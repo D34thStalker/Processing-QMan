@@ -125,11 +125,26 @@ public void draw() {
     background(#0000ff);
     drawObstacles();
     drawSprinklers();
-    if (gCounter == 0) runSprinklerAnimation();
+
+    switch(gCounter) {
+    case 0: 
+      runSprinklerAnimation();
+      break;
+    case 60:
+    case 120:
+    case 180:
+      grass.play();
+      break;
+    case 90:
+    case 150:
+      grass.pause();
+      break;
+    case 209:
+      grass.stop();
+      break;
+    }
     drawGrass();
-    if (gCounter == 60) grass.play();
-    gCounter++;
-    if (gCounter >= 140) grass.stop();
+    if (gCounter < 210) gCounter++;
   }
 }
 
@@ -185,7 +200,7 @@ void createObstacles() {
   obstacles = new ArrayList<Obstacle>();
 
   for (int i = 0; i < allAvailableTilesOnMap.size(); i++) {
-    int num = (int)random(0,3);
+    int num = (int)random(0, 3);
     obstacles.add(new Obstacle(new PVector(allAvailableTilesOnMap.get(i).x, allAvailableTilesOnMap.get(i).y), loadImage("obstacles/obstacle"+num+".png")));
   }
   allAvailableTilesOnMap.clear();
