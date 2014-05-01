@@ -98,6 +98,13 @@ public void draw() {
     drawSprinklers();
 
     if (isNut) nut.draw();
+    else {
+      double nut_probability = 0.005;
+      int randomNumber = (int)(random(0, 1000));
+      // println("randomNumber: " + randomNumber);
+
+      if (randomNumber <= nut_probability*1000) dropNut();
+    }
 
     player.draw();
 
@@ -275,7 +282,7 @@ void dropNut() {
   if (stunEnemies) return;
   int randomIndex = (int)(random(0, tiles.size()));
   PVector randomPosition = tiles.get(randomIndex).getLoc();
-  nut = new Nut(randomPosition, new Sprite(this, "sprinkler.jpg", 1, 1, 100));
+  nut = new Nut(randomPosition, new Sprite(this, "I_C_Nut.png", 1, 1, 100));
   isNut = true;
 }
 
