@@ -96,6 +96,13 @@ public void draw() {
     drawSprinklers();
 
     if (isNut) nut.draw();
+    else {
+      double nut_probability = 0.005;
+      int randomNumber = (int)(random(0, 1000));
+      // println("randomNumber: " + randomNumber);
+
+      if (randomNumber <= nut_probability*1000) dropNut();
+    }
 
     player.draw();
 
