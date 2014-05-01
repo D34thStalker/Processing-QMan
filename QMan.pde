@@ -253,7 +253,7 @@ void dropNut() {
   if (stunEnemies) return;
   int randomIndex = (int)(random(0, tiles.size()));
   PVector randomPosition = tiles.get(randomIndex).getLoc();
-  nut = new Nut(randomPosition, new Sprite(this, "sprinkler.jpg", 1, 1, 100));
+  nut = new Nut(randomPosition, new Sprite(this, "I_C_Nut.png", 1, 1, 100));
   isNut = true;
 }
 
