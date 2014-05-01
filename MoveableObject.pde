@@ -75,8 +75,8 @@ class MoveableObject {
       if (loc.y - h < min_y) {
         return true;
       }
-      for ( PVector o : allAvailableTilesOnMap ) {
-        if (checkIfWillCollide(loc.x, loc.y-grid_size, o)) return true;
+      for ( Obstacle o : obstacles ) {
+        if (checkIfWillCollide(loc.x, loc.y-grid_size, o.getLoc())) return true;
       }
       return false;
       //south
@@ -84,8 +84,8 @@ class MoveableObject {
       if (loc.y + h > max_y) {
         return true;
       }
-      for ( PVector o : allAvailableTilesOnMap ) {
-        if (checkIfWillCollide(loc.x, loc.y+grid_size, o)) return true;
+      for ( Obstacle o : obstacles ) {
+        if (checkIfWillCollide(loc.x, loc.y+grid_size, o.getLoc())) return true;
       }
       return false;
       //west
@@ -93,8 +93,8 @@ class MoveableObject {
       if (loc.x - grid_size - w < 0) {
         return true;
       }
-      for ( PVector o : allAvailableTilesOnMap ) {
-        if (checkIfWillCollide(loc.x-grid_size, loc.y, o)) return true;
+      for ( Obstacle o : obstacles ) {
+        if (checkIfWillCollide(loc.x-grid_size, loc.y, o.getLoc())) return true;
       }
       return false;
       //east
@@ -102,8 +102,8 @@ class MoveableObject {
       if (loc.x + grid_size + w > width - grid_size) {
         return true;
       }
-      for ( PVector o : allAvailableTilesOnMap ) {
-        if (checkIfWillCollide(loc.x+grid_size, loc.y, o)) return true;
+      for ( Obstacle o : obstacles ) {
+        if (checkIfWillCollide(loc.x+grid_size, loc.y, o.getLoc())) return true;
       }
       return false;
     }

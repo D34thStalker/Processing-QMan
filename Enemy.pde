@@ -20,21 +20,45 @@ class Enemy extends MoveableObject {
   }
 
   public void chase(PVector other) {
-    if (other.x < loc.x) {
-      if (!willHit(WEST))
-        move(WEST);
-    }
-    if (other.x > loc.x) {
-      if (!willHit(EAST))
-        move(EAST);
-    }
-    if (other.y < loc.y) {
-      if (!willHit(NORTH))
-        move(NORTH);
-    }
-    if (other.y > loc.y) {
-      if (!willHit(SOUTH))
-        move(SOUTH);
+    int num = (int)random(0, 2);
+    println(num);
+    switch(num) {
+    case 0:
+      if (other.x < loc.x) {
+        if (!willHit(WEST))
+          move(WEST);
+      }
+      else if (other.x > loc.x) {
+        if (!willHit(EAST))
+          move(EAST);
+      }
+      else if (other.y < loc.y) {
+        if (!willHit(NORTH))
+          move(NORTH);
+      }
+      else if (other.y > loc.y) {
+        if (!willHit(SOUTH))
+          move(SOUTH);
+      }
+      break;
+    case 1:
+      if (other.y < loc.y) {
+        if (!willHit(NORTH))
+          move(NORTH);
+      }
+      else if (other.y > loc.y) {
+        if (!willHit(SOUTH))
+          move(SOUTH);
+      }
+      else if (other.x < loc.x) {
+        if (!willHit(WEST))
+          move(WEST);
+      }
+      else if (other.x > loc.x) {
+        if (!willHit(EAST))
+          move(EAST);
+      }
+      break;
     }
   }
 }

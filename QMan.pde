@@ -40,7 +40,8 @@ ArrayList<Tile> tiles;
 ArrayList<PVector> allTilesOnMap;
 // Available tiles after giving to the flippable ( OBSTACLES )
 ArrayList<PVector> allAvailableTilesOnMap;
-ArrayList<Sprite> sprinklers;
+ArrayList<Sprinkler> sprinklers;
+ArrayList<Obstacle> obstacles;
 
 boolean playing = false;
 boolean win = false;
@@ -67,6 +68,7 @@ void setupGame() {
   grass = new Gif(this, "grass.gif");
   fillGridArray();
   createTileArray();
+  createObstacles();
   setupSprinklers();
 
   tilesFlipped = 0;
@@ -99,12 +101,12 @@ public void draw() {
 
     player.draw();
 
-    for (Enemy e : enemies) { 
-      if (e.moveTimer == 0 && !stunEnemies) e.chase(player);
-      e.moveTimer++;
-      if (e.moveTimer >= 60) e.moveTimer = 0;
-      e.draw();
-    }
+//    for (Enemy e : enemies) { 
+//      if (e.moveTimer == 0 && !stunEnemies) e.chase(player);
+//      e.moveTimer++;
+//      if (e.moveTimer >= 60) e.moveTimer = 0;
+//      e.draw();
+//    }
 
     if (stunEnemies) stunTheEnemies();
     checkIfHitNut();
@@ -116,18 +118,17 @@ public void draw() {
     background(#0000ff);
     drawObstacles();
     drawSprinklers();
-    runGrassAnimation();
-    grass.play();
+    if (gCounter == 0) runSprinklerAnimation();
+    drawGrass();
+    if (gCounter == 20) grass.play();
     gCounter++;
-    if (gCounter >= 85) grass.stop();
+    if (gCounter >= 100) grass.stop();
   }
 }
 
 void drawObstacles() {
-  for (PVector e : allAvailableTilesOnMap) {
-    stroke(#000000);
-    fill( #cccccc );
-    rect(e.x, e.y, 64, 64);
+  for (Obstacle o : obstacles) {
+    o.draw();
   }
 }
 
@@ -138,7 +139,7 @@ void drawTiles() {
 
 
 void drawSprinklers() {
-  for (Sprite s : sprinklers)
+  for (Sprinkler s : sprinklers)
     s.draw();
 }
 
@@ -173,17 +174,32 @@ void createTileArray() {
   }
 }
 
+void createObstacles() {
+  obstacles = new ArrayList<Obstacle>();
+
+  for (int i = 0; i < allAvailableTilesOnMap.size(); i++) {
+    obstacles.add(new Obstacle(new PVector(allAvailableTilesOnMap.get(i).x, allAvailableTilesOnMap.get(i).y), loadImage("sprinkler.jpg")));
+  }
+  allAvailableTilesOnMap.clear();
+}
+
 void setupSprinklers() {
-  sprinklers = new ArrayList();
+  int num = 0;
+  sprinklers = new ArrayList<Sprinkler>();
   boolean first = true;
   int x = 0;
   // Create the Sprinklers
   for ( int i = 0; i < 2; i++ ) {
     for ( int y = min_y; y < max_y; y+=grid_size ) {
-      if (first) x = 32;
-      else x = width - 31;
-      Sprite s = new Sprite(this, "sprinkler.jpg", 1, 1, 100);
-      s.setXY(x, y+32);
+      if (first) {
+        x = 0;
+        num = 0;
+      }
+      else {
+        x = width - 64;
+        num = 1;
+      }
+      Sprinkler s = new Sprinkler(new PVector(x, y), new Gif(this, "sprinkler"+num+".gif"));
       sprinklers.add(s);
     }
     first = !first;
@@ -218,9 +234,15 @@ void checkIfLost() {
   }
 }
 
-void runGrassAnimation() {
+void drawGrass() {
   for ( Tile t : tiles ) {
-    image(grass, t.getLoc().x+32, t.getLoc().y+32);
+    image(grass, t.getLoc().x, t.getLoc().y);
+  }
+}
+
+void runSprinklerAnimation() {
+  for ( Sprinkler s : sprinklers ) {
+    s.play();
   }
 }
 
