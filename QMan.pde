@@ -185,7 +185,8 @@ void createObstacles() {
   obstacles = new ArrayList<Obstacle>();
 
   for (int i = 0; i < allAvailableTilesOnMap.size(); i++) {
-    obstacles.add(new Obstacle(new PVector(allAvailableTilesOnMap.get(i).x, allAvailableTilesOnMap.get(i).y), loadImage("sprinkler.jpg")));
+    int num = (int)random(0,3);
+    obstacles.add(new Obstacle(new PVector(allAvailableTilesOnMap.get(i).x, allAvailableTilesOnMap.get(i).y), loadImage("obstacles/obstacle"+num+".png")));
   }
   allAvailableTilesOnMap.clear();
 }
