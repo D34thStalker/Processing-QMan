@@ -350,10 +350,6 @@ void keyPressed() {
       }
     }
     break;
-  case 'i':
-  case 'I':
-    if (!isNut) dropNut();
-    break;
   default:
     break;
   }
