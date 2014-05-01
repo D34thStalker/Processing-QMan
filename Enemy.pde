@@ -21,7 +21,6 @@ class Enemy extends MoveableObject {
 
   public void chase(PVector other) {
     int num = (int)random(0, 2);
-    println(num);
     switch(num) {
     case 0:
       if (other.x < loc.x) {

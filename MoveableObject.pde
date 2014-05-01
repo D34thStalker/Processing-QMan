@@ -36,22 +36,22 @@ class MoveableObject {
     switch(direction) {
       //north
     case NORTH:
-      println("North");
+      //println("North");
       loc.y-=grid_size;
       break;
       //south
     case SOUTH:
-      println("South");
+      //println("South");
       loc.y+=grid_size;
       break;
       //west
     case WEST:
-      println("West");
+      //println("West");
       loc.x-=grid_size;
       break;
       //east
     case EAST:
-      println("East");
+      //println("East");
       loc.x+=grid_size;
       break;
     }
