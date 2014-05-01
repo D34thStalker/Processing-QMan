@@ -164,7 +164,7 @@ void drawSprinklers() {
     s.draw();
 }
 
-PVector [][] tileMap = new PVector[8][] ;
+PVector [][] tileMap = new PVector[8][7] ;
 
 void fillGridArray() {
   int x_array_pos = 0;
@@ -213,9 +213,19 @@ void createObstacles() {
   obstacles = new ArrayList<Obstacle>();
 
   for (int i = 0; i < obstacleCount; i++) {
-    int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
-    PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
-    allAvailableTilesOnMap.remove(randomIndex);
+    PVector randomPosition = null;
+
+    do {
+      int randomX = (int)(random(1, 7));
+      int randomY = (int)(random(1, 6));
+    
+      randomPosition = tileMap[randomX][randomY];
+    } while (obstacles.contains(new Obstacle(randomPosition)));
+
+    // int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
+    // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
+    allAvailableTilesOnMap.remove(randomPosition);
+
     obstacles.add(new Obstacle(randomPosition, loadImage("obstacles/obstacle"+i+".png")));
   }
 }
