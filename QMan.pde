@@ -168,21 +168,29 @@ void drawTiles() {
     t.draw();
 }
 
-
 void drawSprinklers() {
   for (Sprinkler s : sprinklers)
     s.draw();
 }
 
+PVector [][] tileMap = new PVector[8][7] ;
+
 void fillGridArray() {
+  int x_array_pos = 0;
+  int y_array_pos = 0;
+
   allTilesOnMap = new ArrayList<PVector>();
   allAvailableTilesOnMap = new ArrayList<PVector>();
   for ( int x=min_x; x<max_x; x+=grid_size ) {
     for ( int y=min_y; y<max_y; y+=grid_size ) {
       allTilesOnMap.add(new PVector(x, y));
       allAvailableTilesOnMap.add(new PVector(x, y));
-      //println(x + "," + y);
+      
+      tileMap[x_array_pos][y_array_pos] = new PVector(x, y);
+      y_array_pos++;
     }
+    x_array_pos++;
+    y_array_pos = 0;
   }
 }
 
@@ -203,9 +211,19 @@ void createTileArray() {
 void createObstacles() {
   for (int i = 0; i < obstacleCount; i++) {
 
-    int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
-    PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
+    PVector randomPosition = null;
+
+    do {
+      int randomX = (int)(random(1, 7));
+      int randomY = (int)(random(1, 6));
+    
+      randomPosition = tileMap[randomX][randomY];
+    } while (obstacles.contains(new Obstacle(randomPosition)));
+
+    // int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
+    // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomPosition);
+
     obstacles.add(new Obstacle(randomPosition, loadImage("obstacles/obstacle"+i+".png")));
   }
 }
