@@ -16,8 +16,6 @@ boolean isNut = false;
 Sprite squirrel;
 boolean stunEnemies = false;
 
-Gif grass;
-
 int min_x = 64;
 int min_y = 100;
 int max_x = 576;
@@ -50,6 +48,17 @@ int squirrelRot = 0;
 int sCounter = 0;
 int gCounter = 0;
 
+PVector [][] tileMap = new PVector[8][7] ;
+
+// IMAGES
+ArrayList<PImage> obstacleImages;
+ArrayList<Gif> sprinklerImages;
+Sprite playerSprite;
+Sprite enemySprite;
+Sprite squirrelSprite;
+Sprite nutSprite;
+Gif grassImage;
+
 public void setup() {
   size(640, 640, JAVA2D);
   frameRate(60);
@@ -58,11 +67,35 @@ public void setup() {
   // Place your setup code here
   background(loadImage("bg.jpg"));
 
+  InstantiateLists();
+  LoadImages();
+}
+
+void InstantiateLists() {
   tiles = new ArrayList<Tile>();
   enemies = new ArrayList<Enemy>();
   obstacles = new ArrayList<Obstacle>();
   sprinklers = new ArrayList<Sprinkler>();
-  grass = new Gif(this, "grass.gif");
+
+
+  obstacleImages = new ArrayList<PImage>();
+  sprinklerImages = new ArrayList<Gif>();
+}
+void LoadImages() {
+
+  for (int i = 0; i < obstacleCount; i++)
+    obstacleImages.add(loadImage("obstacles/obstacle"+i+".png"));
+
+
+  for (int i = 0; i < 2; i++)
+    sprinklerImages.add(new Gif(this, "sprinkler"+i+".gif"));
+
+  playerSprite = new Sprite(this, "QMan.png", 1, 1, 100);
+  enemySprite = new Sprite(this, "Enemy.png", 1, 1, 100);
+
+  squirrelSprite = new Sprite(this, "squirrel.png", 1, 1, 100);
+  nutSprite = new Sprite(this, "nut.png", 1, 1, 100);
+  grassImage = new Gif(this, "grass.gif");
 }
 
 void playGame() {
@@ -79,10 +112,10 @@ void playGame() {
   sCounter = 0;
   squirrelRot = 0;
 
-  player = new Player(new PVector(64, 100), new Sprite(this, "QMan.png", 1, 1, 100));
+  player = new Player(new PVector(64, 100), playerSprite);
 
-  enemies.add(new Enemy(new PVector(512, 100), new Sprite(this, "Enemy.png", 1, 1, 100)));
-  enemies.add(new Enemy(new PVector(512, 484), new Sprite(this, "Enemy.png", 1, 1, 100)));
+  enemies.add(new Enemy(new PVector(512, 100), enemySprite));
+  enemies.add(new Enemy(new PVector(512, 484), enemySprite));
   playing = true;
 }
 
@@ -94,6 +127,7 @@ void resetGame() {
   tiles.clear();
   obstacles.clear();
   sprinklers.clear();
+  win = false;
   playGame();
 }
 
@@ -142,14 +176,14 @@ public void draw() {
     case 60:
     case 120:
     case 180:
-      grass.play();
+      grassImage.play();
       break;
     case 90:
     case 150:
-      grass.pause();
+      grassImage.pause();
       break;
     case 209:
-      grass.stop();
+      grassImage.stop();
       break;
     }
     drawGrass();
@@ -173,8 +207,6 @@ void drawSprinklers() {
     s.draw();
 }
 
-PVector [][] tileMap = new PVector[8][7] ;
-
 void fillGridArray() {
   int x_array_pos = 0;
   int y_array_pos = 0;
@@ -185,7 +217,7 @@ void fillGridArray() {
     for ( int y=min_y; y<max_y; y+=grid_size ) {
       allTilesOnMap.add(new PVector(x, y));
       allAvailableTilesOnMap.add(new PVector(x, y));
-      
+
       tileMap[x_array_pos][y_array_pos] = new PVector(x, y);
       y_array_pos++;
     }
@@ -216,15 +248,16 @@ void createObstacles() {
     do {
       int randomX = (int)(random(1, 7));
       int randomY = (int)(random(1, 6));
-    
+
       randomPosition = tileMap[randomX][randomY];
-    } while (obstacles.contains(new Obstacle(randomPosition)));
+    } 
+    while (obstacles.contains (new Obstacle (randomPosition)));
 
     // int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
     // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomPosition);
 
-    obstacles.add(new Obstacle(randomPosition, loadImage("obstacles/obstacle"+i+".png")));
+    obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
   }
 }
 
@@ -243,7 +276,7 @@ void setupSprinklers() {
         x = width - 64;
         num = 1;
       }
-      Sprinkler s = new Sprinkler(new PVector(x, y), new Gif(this, "sprinkler"+num+".gif"));
+      Sprinkler s = new Sprinkler(new PVector(x, y), sprinklerImages.get(num));
       sprinklers.add(s);
     }
     first = !first;
@@ -280,7 +313,7 @@ void checkIfLost() {
 
 void drawGrass() {
   for ( Tile t : tiles ) {
-    image(grass, t.getLoc().x, t.getLoc().y);
+    image(grassImage, t.getLoc().x, t.getLoc().y);
   }
 }
 
@@ -310,16 +343,15 @@ void checkIfHitNut() {
     stunEnemies = true;
     isNut = false;
     nut = null;
-    squirrel = new Sprite(this, "squirrel.png", 1, 1, 100);
+    squirrel = squirrelSprite;
   }
 }
-
 
 void dropNut() {
   if (stunEnemies) return;
   int randomIndex = (int)(random(0, tiles.size()));
   PVector randomPosition = tiles.get(randomIndex).getLoc();
-  nut = new Nut(randomPosition, new Sprite(this, "nut.png", 1, 1, 100));
+  nut = new Nut(randomPosition, nutSprite);
   isNut = true;
 }
 
