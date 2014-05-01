@@ -127,9 +127,9 @@ public void draw() {
     drawSprinklers();
     if (gCounter == 0) runSprinklerAnimation();
     drawGrass();
-    if (gCounter == 20) grass.play();
+    if (gCounter == 60) grass.play();
     gCounter++;
-    if (gCounter >= 100) grass.stop();
+    if (gCounter >= 140) grass.stop();
   }
 }
 
