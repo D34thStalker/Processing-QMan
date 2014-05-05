@@ -30,6 +30,7 @@ final int EAST = 3;
 int obstacleCount = 5;
 
 int tilesFlipped;
+int moves = 0;
 
 Player player;
 ArrayList<Enemy> enemies;
@@ -55,6 +56,7 @@ ArrayList<PImage> obstacleImages;
 ArrayList<Gif> sprinklerImages;
 Sprite playerSprite;
 Sprite enemySprite;
+Sprite enemySprite1;
 Sprite squirrelSprite;
 Sprite nutSprite;
 Gif grassImage;
@@ -92,6 +94,7 @@ void LoadImages() {
 
   playerSprite = new Sprite(this, "QMan.png", 1, 1, 100);
   enemySprite = new Sprite(this, "Enemy.png", 1, 1, 100);
+  enemySprite1 = new Sprite(this, "Enemy.png", 1, 1, 100);
 
   squirrelSprite = new Sprite(this, "squirrel.png", 1, 1, 100);
   nutSprite = new Sprite(this, "nut.png", 1, 1, 100);
@@ -105,6 +108,7 @@ void playGame() {
   setupSprinklers();
 
   tilesFlipped = 0;
+  moves = 0;
   isNut = false;
   stunEnemies = false;
   stunTimer = 0;
@@ -115,7 +119,7 @@ void playGame() {
   player = new Player(new PVector(64, 100), playerSprite);
 
   enemies.add(new Enemy(new PVector(512, 100), enemySprite));
-  enemies.add(new Enemy(new PVector(512, 484), enemySprite));
+  enemies.add(new Enemy(new PVector(512, 484), enemySprite1));
   playing = true;
 }
 
@@ -158,6 +162,7 @@ public void draw() {
       e.draw();
     }
 
+    movesLabel.setText("Amount of Steps: " + moves);
     if (stunEnemies) stunTheEnemies();
     checkIfHitNut();
     checkIfWon();
@@ -287,6 +292,8 @@ void setupSprinklers() {
 // to customise the GUI controls
 public void customGUI() {
   title.setFont(new Font("Dialog", Font.PLAIN, 24));
+  movesLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
+  movesLabel.setVisible(false);
 }
 
 public void startGame() {
@@ -389,6 +396,7 @@ void keyPressed() {
       if (!player.willHit(NORTH)) {
         player.move(NORTH);
         checkIfOnTile();
+        moves++;
       }
     }
     break;
@@ -398,6 +406,7 @@ void keyPressed() {
       if (!player.willHit(SOUTH)) {
         player.move(SOUTH);
         checkIfOnTile();
+        moves++;
       }
     }
     break;
@@ -407,6 +416,7 @@ void keyPressed() {
       if (!player.willHit(WEST)) {
         player.move(WEST);
         checkIfOnTile();
+        moves++;
       }
     }
     break;
@@ -416,30 +426,13 @@ void keyPressed() {
       if (!player.willHit(EAST)) {
         player.move(EAST);
         checkIfOnTile();
+        moves++;
       }
     }
     break;
   default:
     break;
   }
-  //  switch(keyCode) {
-  //  case UP:
-  //    if (playing)
-  //      player.move(1);
-  //    break;
-  //  case DOWN:
-  //    if (playing)
-  //      player.move(2);
-  //    break;
-  //  case LEFT:
-  //    if (playing)
-  //      player.move(3);
-  //    break;
-  //  case RIGHT:
-  //    if (playing)
-  //      player.move(4);
-  //    break;
-  //  }
 }
 
 void keyReleased() {

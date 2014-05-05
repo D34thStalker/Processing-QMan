@@ -3,3 +3,4 @@ class Player extends MoveableObject {
     super(loc, sprite);
   }
 }
+
