@@ -41,7 +41,7 @@ public void createGUI(){
   startBtn.addEventHandler(this, "startBtn_click1");
   movesLabel = new GLabel(this, 20, 560, 300, 40);
   movesLabel.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
-  movesLabel.setText("Amount Of Steps: ");
+  movesLabel.setText("Total Steps: ");
   movesLabel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   movesLabel.setOpaque(false);
 }

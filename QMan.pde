@@ -162,7 +162,7 @@ public void draw() {
       e.draw();
     }
 
-    movesLabel.setText("Amount of Steps: " + moves);
+    movesLabel.setText("Total Steps: " + moves);
     if (stunEnemies) stunTheEnemies();
     checkIfHitNut();
     checkIfWon();
