@@ -242,7 +242,8 @@ void scoresScreen() {
   textFont(f, 30);
   text("TOP SCORES", width/2, 100);
   textFont(f, 26);
-  for (int i = 0; i < topScores.length; i++) {
+  int scoreLength = topScores.length > 10 ? 10 : topScores.length;
+  for (int i = 0; i < scoreLength; i++) {
     text((i+1) + ": " + topScores[i] + " Steps", width/2, 200+(i*25));
   }
 }

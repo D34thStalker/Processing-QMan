@@ -43,14 +43,14 @@ public void createGUI(){
   title.setTextBold();
   title.setLocalColorScheme(GCScheme.RED_SCHEME);
   title.setOpaque(false);
-  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "rectangle.jpg", "rectangle.jpg", "rectangle.jpg" } );
+  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "start.png", "start.png", "start.png" } );
   startBtn.addEventHandler(this, "startBtn_click1");
   movesLabel = new GLabel(this, 20, 560, 300, 40);
   movesLabel.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   movesLabel.setText("Amount Of Steps: ");
   movesLabel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   movesLabel.setOpaque(false);
-  scoresBtn = new GImageButton(this, 240, 300, 160, 60, new String[] { "rectangle.jpg", "rectangle.jpg", "rectangle.jpg" } );
+  scoresBtn = new GImageButton(this, 240, 300, 160, 60, new String[] { "scores.png", "scores.png", "scores.png" } );
   scoresBtn.addEventHandler(this, "scoresBtn_click1");
 }
 
