@@ -10,6 +10,10 @@ import g4p_controls.*;
 import java.awt.Font;
 import java.awt.*;
 
+String where = "";
+
+PFont f;
+
 Nut nut;
 boolean isNut = false;
 
@@ -42,8 +46,6 @@ ArrayList<PVector> allAvailableTilesOnMap;
 ArrayList<Sprinkler> sprinklers;
 ArrayList<Obstacle> obstacles;
 
-boolean playing = false;
-boolean win = false;
 
 int squirrelRot = 0;
 int sCounter = 0;
@@ -61,6 +63,13 @@ Sprite squirrelSprite;
 Sprite nutSprite;
 Gif grassImage;
 
+// DATA
+PrintWriter writer;
+BufferedReader reader;
+String line;
+String[] scores;
+int[] topScores;
+
 public void setup() {
   size(640, 640, JAVA2D);
   frameRate(60);
@@ -68,6 +77,10 @@ public void setup() {
   customGUI();
   // Place your setup code here
   background(loadImage("bg.jpg"));
+
+  f = createFont("Verdana", 34, true);
+
+  where = "menu";
 
   InstantiateLists();
   LoadImages();
@@ -120,79 +133,117 @@ void playGame() {
 
   enemies.add(new Enemy(new PVector(512, 100), enemySprite));
   enemies.add(new Enemy(new PVector(512, 484), enemySprite1));
-  playing = true;
+  where = "game";
 }
 
 void resetGame() {
   println("Reset");
+  if (where.equals("win")) stopSprinklerAnimation();
   allTilesOnMap.clear();
   allAvailableTilesOnMap.clear();
   enemies.clear();
   tiles.clear();
   obstacles.clear();
   sprinklers.clear();
-  win = false;
   playGame();
 }
 
 public void draw() {
   // background(230);
-  if (playing) {
-    background(#0000ff);
-    rectMode(CORNER);
-    drawObstacles();
-    drawTiles();
-    drawSprinklers();
-
-    if (isNut) nut.draw();
-    else {
-      double nut_probability = 0.005;
-      int randomNumber = (int)(random(0, 1000));
-      // println("randomNumber: " + randomNumber);
-
-      if (randomNumber <= nut_probability*1000) dropNut();
-    }
-
-    player.draw();
-
-    for (Enemy e : enemies) { 
-      if (e.moveTimer == 0 && !stunEnemies) e.chase(player);
-      e.moveTimer++;
-      if (e.moveTimer >= 60) e.moveTimer = 0;
-      e.draw();
-    }
-
-    movesLabel.setText("Amount of Steps: " + moves);
-    if (stunEnemies) stunTheEnemies();
-    checkIfHitNut();
-    checkIfWon();
-    checkIfLost();
-    // println("tilesFlipped : " + tilesFlipped);
+  if (where.equals("menu")) {
+    menu();
   }
-  if (win) {
-    background(#0000ff);
-    drawObstacles();
-    drawSprinklers();
+  if (where.equals("scores")) {
+    scoresScreen();
+  }
+  if (where.equals("game")) {
+    game();
+  }
+  if (where.equals("win")) {
+    winScreen();
+  }
+  if (where.equals("lose")) {
+  }
+}
 
-    switch(gCounter) {
-    case 0: 
-      runSprinklerAnimation();
-      break;
-    case 60:
-    case 120:
-    case 180:
-      grassImage.play();
-      break;
-    case 90:
-    case 150:
-      grassImage.pause();
-      break;
-    case 209:
-      grassImage.stop();
-      break;
-    }
-    drawGrass();
-    if (gCounter < 210) gCounter++;
+void menu() {
+  title.setVisible(true);
+  startBtn.setVisible(true);
+  scoresBtn.setVisible(true);
+  movesLabel.setVisible(false);
+}
+
+void game() {
+  background(#0000ff);
+  rectMode(CORNER);
+  drawObstacles();
+  drawTiles();
+  drawSprinklers();
+
+  if (isNut) nut.draw();
+  else {
+    double nut_probability = 0.005;
+    int randomNumber = (int)(random(0, 1000));
+    // println("randomNumber: " + randomNumber);
+
+    if (randomNumber <= nut_probability*1000) dropNut();
+  }
+
+  player.draw();
+
+  for (Enemy e : enemies) { 
+    if (e.moveTimer == 60 && !stunEnemies) e.chase(player);
+    e.moveTimer++;
+    if (e.moveTimer > 60) e.moveTimer = 0;
+    e.draw();
+  }
+
+  movesLabel.setText("Amount of Steps: " + moves);
+  if (stunEnemies) stunTheEnemies();
+  checkIfHitNut();
+  checkIfWon();
+  checkIfLost();
+  // println("tilesFlipped : " + tilesFlipped);
+}
+
+void winScreen() {
+  background(#0000ff);
+  drawObstacles();
+  drawSprinklers();
+
+  switch(gCounter) {
+  case 0: 
+    runSprinklerAnimation();
+    break;
+  case 60:
+  case 120:
+  case 180:
+    grassImage.play();
+    break;
+  case 90:
+  case 150:
+    grassImage.pause();
+    break;
+  case 209:
+    grassImage.stop();
+    break;
+  }
+  drawGrass();
+  if (gCounter < 210) gCounter++;
+}
+
+void scoresScreen() {
+  // Show the top scores
+  background(#0000ff);
+  startBtn.setVisible(false);
+  scoresBtn.setVisible(false);
+
+  textAlign(CENTER);
+  textFont(f, 30);
+  text("TOP SCORES", width/2, 100);
+  textFont(f, 26);
+  for (int i = 0; i < topScores.length; i++) {
+    text((i+1) + ": " + topScores[i] + " Steps", width/2, 200+(i*25));
   }
 }
 
@@ -304,16 +355,63 @@ public void startGame() {
 void checkIfWon() {
   if (tilesFlipped == tiles.size()) {
     println("YOU WIN!");
-    playing = false;
-    win = true;
+    where = "win";
+
+    read();
+    write();
   }
 }
 
+void write() {
+  writer = createWriter("topScores.txt");
+  if ( scores != null ) {
+    String[] tempScores = new String[scores.length];
+    for (int i = 0; i < scores.length-1; i++) {
+      tempScores[i] = scores[i];
+    } 
+    tempScores[tempScores.length-1] = str(moves);
+    for (int i = 0; i < tempScores.length; i++) {
+      writer.print(tempScores[i]+",");
+    }
+  } 
+  else {
+    writer.print(moves);
+  }
+
+  writer.flush(); // write any buffered data to the file
+  writer.close(); // close the file
+}
+
+void read() {
+  reader = createReader("topScores.txt");
+  try {
+    line = reader.readLine();
+  } 
+  catch (IOException e) {
+    e.printStackTrace();
+    line = null;
+  }
+  if (line != null) {
+    scores = split(line, ",");
+  }
+}
+
+void showScores() {
+  where = "scores";
+  read();
+  topScores = new int[scores.length-1];
+  for (int i = 0; i < scores.length-1; i++) {
+    topScores[i] = int(scores[i]);
+  }
+  topScores = sort(topScores);
+}
+
 void checkIfLost() {
+  if (player.getInvincible()) return;
   for ( Enemy e : enemies ) {
     if ( e.getSprite().bb_collision(player.getSprite()) ) {
       println("YOU LOSE!");
-      playing = false;
+      where = "lose";
     }
   }
 }
@@ -325,9 +423,13 @@ void drawGrass() {
 }
 
 void runSprinklerAnimation() {
-  for ( Sprinkler s : sprinklers ) {
+  for ( Sprinkler s : sprinklers )
     s.play();
-  }
+}
+
+void stopSprinklerAnimation() {
+  for ( Sprinkler s : sprinklers )
+    s.stop();
 }
 
 void checkIfOnTile() {
@@ -368,6 +470,7 @@ void stunTheEnemies() {
     stunTimer = 0;
     stunEnemies = false; 
     squirrel = null;
+    player.setInvincible(false);
     return;
   }
   if (sCounter == 0)
@@ -381,6 +484,7 @@ void stunTheEnemies() {
     squirrel.setRot(squirrelRot);
     squirrel.draw();
   }
+  player.setInvincible(true);
   stunTimer++;
 }
 
@@ -388,11 +492,11 @@ void keyPressed() {
   switch(key) {
   case 'r':
   case 'R':
-    resetGame();
+    if (!where.equals("menu") && !where.equals("scores")) resetGame();
     break;
   case 'w':
   case 'W':
-    if (playing) {
+    if (where.equals("game")) {
       if (!player.willHit(NORTH)) {
         player.move(NORTH);
         checkIfOnTile();
@@ -402,7 +506,7 @@ void keyPressed() {
     break;
   case 's':
   case 'S':
-    if (playing) {
+    if (where.equals("game")) {
       if (!player.willHit(SOUTH)) {
         player.move(SOUTH);
         checkIfOnTile();
@@ -412,7 +516,7 @@ void keyPressed() {
     break;
   case 'a':
   case 'A':
-    if (playing) {
+    if (where.equals("game")) {
       if (!player.willHit(WEST)) {
         player.move(WEST);
         checkIfOnTile();
@@ -422,7 +526,7 @@ void keyPressed() {
     break;
   case 'd':
   case 'D':
-    if (playing) {
+    if (where.equals("game")) {
       if (!player.willHit(EAST)) {
         player.move(EAST);
         checkIfOnTile();
