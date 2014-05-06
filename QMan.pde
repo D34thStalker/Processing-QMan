@@ -1,3 +1,10 @@
+import ddf.minim.spi.*;
+import ddf.minim.signals.*;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+import ddf.minim.ugens.*;
+import ddf.minim.effects.*;
+
 import gifAnimation.*;
 
 import sprites.utils.*;
@@ -10,7 +17,10 @@ import g4p_controls.*;
 import java.awt.Font;
 import java.awt.*;
 
+Minim minim;
+
 String where = "";
+String setWhere = "";
 
 PFont f;
 
@@ -63,6 +73,9 @@ Sprite squirrelSprite;
 Sprite nutSprite;
 Gif grassImage;
 
+// Sounds
+AudioSnippet sprinklerSound;
+
 // DATA
 PrintWriter writer;
 BufferedReader reader;
@@ -78,12 +91,19 @@ public void setup() {
   // Place your setup code here
   background(loadImage("bg.jpg"));
 
+  minim = new Minim(this);
+
   f = createFont("Verdana", 34, true);
 
   where = "menu";
 
+  InstantiateSounds();
   InstantiateLists();
   LoadImages();
+}
+
+void InstantiateSounds() {
+  sprinklerSound = minim.loadSnippet("sprinkler.wav");
 }
 
 void InstantiateLists() {
@@ -150,6 +170,9 @@ void resetGame() {
 
 public void draw() {
   // background(230);
+  if (where.equals("loading")) {
+    loading();
+  }
   if (where.equals("menu")) {
     menu();
   }
@@ -163,6 +186,20 @@ public void draw() {
     winScreen();
   }
   if (where.equals("lose")) {
+  }
+}
+
+void setScene(String scene) {
+  where = scene;
+  setWhere = "";
+}
+
+int loadingCounter = 0;
+void loading() {
+  loadingCounter++;
+  if (loadingCounter >= 60) {
+    setScene(setWhere);
+    loadingCounter = 0;
   }
 }
 
@@ -356,7 +393,8 @@ public void startGame() {
 void checkIfWon() {
   if (tilesFlipped == tiles.size()) {
     println("YOU WIN!");
-    where = "win";
+    where = "loading";
+    setWhere = "win";
 
     read();
     write();
@@ -412,7 +450,8 @@ void checkIfLost() {
   for ( Enemy e : enemies ) {
     if ( e.getSprite().bb_collision(player.getSprite()) ) {
       println("YOU LOSE!");
-      where = "lose";
+      where = "loading";
+      setWhere = "lose";
     }
   }
 }
@@ -424,11 +463,14 @@ void drawGrass() {
 }
 
 void runSprinklerAnimation() {
+  sprinklerSound.loop();
   for ( Sprinkler s : sprinklers )
     s.play();
 }
 
 void stopSprinklerAnimation() {
+  sprinklerSound.pause();
+  sprinklerSound.rewind();
   for ( Sprinkler s : sprinklers )
     s.stop();
 }
