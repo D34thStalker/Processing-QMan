@@ -18,9 +18,15 @@ public void startBtn_click1(GImageButton source, GEvent event) { //_CODE_:startB
   startGame();
   title.setVisible(false);
   startBtn.setVisible(false);
+  scoresBtn.setVisible(false);
   movesLabel.setVisible(true);
   println("startBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
 } //_CODE_:startBtn:903391:
+
+public void scoresBtn_click1(GImageButton source, GEvent event) { //_CODE_:scoresBtn:591759:
+  showScores();
+  println("scoresBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
+} //_CODE_:scoresBtn:591759:
 
 
 
@@ -37,13 +43,15 @@ public void createGUI(){
   title.setTextBold();
   title.setLocalColorScheme(GCScheme.RED_SCHEME);
   title.setOpaque(false);
-  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "rectangle.jpg", "rectangle.jpg", "rectangle.jpg" } );
+  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "start.png", "start.png", "start.png" } );
   startBtn.addEventHandler(this, "startBtn_click1");
   movesLabel = new GLabel(this, 20, 560, 300, 40);
   movesLabel.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
   movesLabel.setText("Total Steps: ");
   movesLabel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   movesLabel.setOpaque(false);
+  scoresBtn = new GImageButton(this, 240, 300, 160, 60, new String[] { "scores.png", "scores.png", "scores.png" } );
+  scoresBtn.addEventHandler(this, "scoresBtn_click1");
 }
 
 // Variable declarations 
@@ -51,4 +59,5 @@ public void createGUI(){
 GLabel title; 
 GImageButton startBtn; 
 GLabel movesLabel; 
+GImageButton scoresBtn; 
 
