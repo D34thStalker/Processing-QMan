@@ -237,7 +237,7 @@ void game() {
   }
 
   player.draw();
-  
+
   //println(pointToTileMapPosition.get(player.getLoc()));
 
   moveSet.clear();
@@ -555,7 +555,11 @@ void keyPressed() {
   switch(key) {
   case 'r':
   case 'R':
-    if (!where.equals("menu") && !where.equals("scores")) resetGame();
+    if (!where.equals("menu") && !where.equals("scores")) {
+      for (Sprinkler s : sprinklers)
+        s.jump(0);
+      resetGame();
+    }
     break;
   case 'w':
   case 'W':

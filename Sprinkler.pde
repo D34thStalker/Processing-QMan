@@ -19,5 +19,9 @@ class Sprinkler extends NonMoveableObject {
   public void stop() {
    image.stop(); 
   }
+  
+  public void jump(int i) {
+   image.jump(i); 
+  }
 }
 
