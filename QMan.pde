@@ -22,6 +22,8 @@ Minim minim;
 String where = "";
 String setWhere = "";
 
+Integer levelNumber = 1;
+
 PFont f;
 
 Nut nut;
@@ -120,6 +122,7 @@ void LoadImages() {
 
   for (int i = 0; i < obstacleCount; i++)
     obstacleImages.add(loadImage("obstacles/obstacle"+i+".png"));
+  obstacleImages.add(loadImage("obstacles/dirt.png"));
 
 
   for (int i = 0; i < 2; i++)
@@ -350,8 +353,11 @@ void createObstacles() {
     // int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
     // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomPosition);
-
-    obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
+    
+    if (levelNumber == 1) 
+      obstacles.add(new Obstacle(randomPosition, obstacleImages.get(obstacleCount)));
+    else
+      obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
   }
 }
 
@@ -396,12 +402,14 @@ void checkIfWon() {
     where = "loading";
     setWhere = "win";
 
-    read();
-    write();
+    levelNumber++;
+
+    readTopScores();
+    writeTopScores();
   }
 }
 
-void write() {
+void writeTopScores() {
   writer = createWriter("topScores.txt");
   if ( scores != null ) {
     String[] tempScores = new String[scores.length];
@@ -421,7 +429,7 @@ void write() {
   writer.close(); // close the file
 }
 
-void read() {
+void readTopScores() {
   reader = createReader("topScores.txt");
   try {
     line = reader.readLine();
@@ -437,7 +445,7 @@ void read() {
 
 void showScores() {
   where = "scores";
-  read();
+  readTopScores();
   topScores = new int[scores.length-1];
   for (int i = 0; i < scores.length-1; i++) {
     topScores[i] = int(scores[i]);
