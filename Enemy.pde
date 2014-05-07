@@ -1,7 +1,7 @@
 class Enemy extends MoveableObject {
   private int moveTimer;
   private Map<Float, Integer> moveUtilityMap = new TreeMap<Float, Integer>();
-  private final int TIME_UNTIL_MOVE = 30;
+  private final int TIME_UNTIL_MOVE = 60;
 
   public Enemy(PVector _loc, Sprite _s) {
     super(_loc, _s);
