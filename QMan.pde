@@ -135,9 +135,9 @@ void LoadImages() {
   for (int i = 0; i < 2; i++)
     sprinklerImages.add(new Gif(this, "sprinkler"+i+".gif"));
 
-  playerSprite = new Sprite(this, "QMan.png", 1, 1, 100);
-  enemySprite = new Sprite(this, "Enemy.png", 1, 1, 100);
-  enemySprite1 = new Sprite(this, "Enemy.png", 1, 1, 100);
+  playerSprite = new Sprite(this, "characters/qman.png", 1, 1, 100);
+  enemySprite = new Sprite(this, "characters/security-guard.png", 1, 1, 100);
+  enemySprite1 = new Sprite(this, "characters/security-guard.png", 1, 1, 100);
 
   squirrelSprite = new Sprite(this, "squirrel.png", 1, 1, 100);
   nutSprite = new Sprite(this, "nut.png", 1, 1, 100);
