@@ -22,6 +22,8 @@ Minim minim;
 String where = "";
 String setWhere = "";
 
+Integer levelNumber = 1;
+
 PFont f;
 
 Nut nut;
@@ -62,9 +64,11 @@ int sCounter = 0;
 int gCounter = 0;
 
 PVector [][] tileMap = new PVector[8][7] ;
+HashMap<PVector, PVector> pointToTileMapPosition = new HashMap<PVector, PVector>();
 
 // IMAGES
 ArrayList<PImage> obstacleImages;
+PImage dirtImage;
 ArrayList<Gif> sprinklerImages;
 Sprite playerSprite;
 Sprite enemySprite;
@@ -93,6 +97,7 @@ public void setup() {
 
   minim = new Minim(this);
 
+
   f = createFont("Verdana", 34, true);
 
   where = "menu";
@@ -120,6 +125,7 @@ void LoadImages() {
 
   for (int i = 0; i < obstacleCount; i++)
     obstacleImages.add(loadImage("obstacles/obstacle"+i+".png"));
+  dirtImage = loadImage("obstacles/dirt.png");
 
 
   for (int i = 0; i < 2; i++)
@@ -227,6 +233,8 @@ void game() {
   }
 
   player.draw();
+  
+  println(pointToTileMapPosition.get(player.getLoc()));
 
   for (Enemy e : enemies) { 
     if (e.moveTimer == 60 && !stunEnemies) e.chase(player);
@@ -305,6 +313,7 @@ void fillGridArray() {
       allAvailableTilesOnMap.add(new PVector(x, y));
 
       tileMap[x_array_pos][y_array_pos] = new PVector(x, y);
+      pointToTileMapPosition.put(new PVector(x, y), new PVector(x_array_pos, y_array_pos));
       y_array_pos++;
     }
     x_array_pos++;
@@ -342,8 +351,11 @@ void createObstacles() {
     // int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
     // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomPosition);
-
-    obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
+    
+    if (levelNumber == 1) 
+      obstacles.add(new Obstacle(randomPosition, dirtImage));
+    else
+      obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
   }
 }
 
@@ -388,12 +400,14 @@ void checkIfWon() {
     where = "loading";
     setWhere = "win";
 
-    read();
-    write();
+    levelNumber++;
+
+    readTopScores();
+    writeTopScores();
   }
 }
 
-void write() {
+void writeTopScores() {
   writer = createWriter("topScores.txt");
   if ( scores != null ) {
     String[] tempScores = new String[scores.length];
@@ -413,7 +427,7 @@ void write() {
   writer.close(); // close the file
 }
 
-void read() {
+void readTopScores() {
   reader = createReader("topScores.txt");
   try {
     line = reader.readLine();
@@ -429,7 +443,7 @@ void read() {
 
 void showScores() {
   where = "scores";
-  read();
+  readTopScores();
   topScores = new int[scores.length-1];
   for (int i = 0; i < scores.length-1; i++) {
     topScores[i] = int(scores[i]);
