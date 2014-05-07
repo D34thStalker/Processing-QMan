@@ -233,7 +233,7 @@ void game() {
   }
 
   player.draw();
-  
+
   println(pointToTileMapPosition.get(player.getLoc()));
 
   for (Enemy e : enemies) { 
@@ -351,7 +351,7 @@ void createObstacles() {
     // int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
     // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomPosition);
-    
+
     if (levelNumber == 1) 
       obstacles.add(new Obstacle(randomPosition, dirtImage));
     else
@@ -463,9 +463,10 @@ void checkIfLost() {
 }
 
 void drawGrass() {
-  for ( Tile t : tiles ) {
+  for ( Tile t : tiles )
     image(grassImage, t.getLoc().x, t.getLoc().y);
-  }
+  for ( Obstacle o : obstacles )
+    image(grassImage, o.getLoc().x, o.getLoc().y);
 }
 
 void runSprinklerAnimation() {
