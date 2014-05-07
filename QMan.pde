@@ -43,6 +43,9 @@ final int WEST = 1;
 final int SOUTH = 2;
 final int EAST = 3;
 
+final int MAX_X_MAP = 8;
+final int MAX_Y_MAP = 7;
+
 int obstacleCount = 5;
 
 int tilesFlipped;
@@ -65,6 +68,7 @@ int gCounter = 0;
 
 PVector [][] tileMap = new PVector[8][7] ;
 HashMap<PVector, PVector> pointToTileMapPosition = new HashMap<PVector, PVector>();
+Set<PVector> moveSet = new HashSet<PVector>();
 
 // IMAGES
 ArrayList<PImage> obstacleImages;
@@ -234,12 +238,21 @@ void game() {
 
   player.draw();
   
-  println(pointToTileMapPosition.get(player.getLoc()));
+  //println(pointToTileMapPosition.get(player.getLoc()));
 
+  moveSet.clear();
   for (Enemy e : enemies) { 
-    if (e.moveTimer == 60 && !stunEnemies) e.chase(player);
-    e.moveTimer++;
-    if (e.moveTimer > 60) e.moveTimer = 0;
+    if (e.readyToMove() && !stunEnemies) {
+      e.setNextMove(player);
+      // Try to see if the next position is already taken by another enemy.
+      // If so, remove it from possible list of moves.
+      if (!moveSet.add(e.getNextPosition())) {
+        println("OVERLAP! REMOVING POSITION!");
+        e.removeMove(e.getNextMove());
+      }
+      e.chase(player);
+    }
+    e.incrementMoveTimer();
     e.draw();
   }
 
