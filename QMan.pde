@@ -250,23 +250,15 @@ void winScreen() {
 
   switch(gCounter) {
   case 0: 
+    grassImage.jump(0);
     runSprinklerAnimation();
     break;
-  case 60:
-  case 120:
-  case 180:
+  case 89:
     grassImage.play();
-    break;
-  case 90:
-  case 150:
-    grassImage.pause();
-    break;
-  case 209:
-    grassImage.stop();
     break;
   }
   drawGrass();
-  if (gCounter < 210) gCounter++;
+  if (gCounter < 90) gCounter++;
 }
 
 void scoresScreen() {
