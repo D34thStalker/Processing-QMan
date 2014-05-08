@@ -197,6 +197,11 @@ void playGame() {
 void resetGame() {
   continueBtn.setVisible(false);
   switchToLevel(levelNumber);
+  clearGame();
+  playGame();
+}
+
+void clearGame() {
   if (where.equals("win")) stopSprinklerAnimation();
   allTilesOnMap.clear();
   allAvailableTilesOnMap.clear();
@@ -204,7 +209,6 @@ void resetGame() {
   tiles.clear();
   obstacles.clear();
   sprinklers.clear();
-  playGame();
 }
 
 public void draw() {
@@ -225,6 +229,7 @@ public void draw() {
     winScreen();
   }
   if (where.equals("lose")) {
+    loseScreen();
   }
 }
 
@@ -235,6 +240,7 @@ void setScene(String scene) {
 
 int loadingCounter = 0;
 void loading() {
+  background(#0000ff);
   loadingCounter++;
   if (loadingCounter >= 60) {
     setScene(setWhere);
@@ -294,18 +300,25 @@ void game() {
 
 void winScreen() {
   background(#0000ff);
-  drawObstacles();
-  drawSprinklers();
+  if (levelNumber < 4) {
+    drawObstacles();
+    drawSprinklers();
+  
+    if (gCounter == 0)
+      runSprinklerAnimation();
+    if (gCounter < 89)
+      drawGrass();
+    else
+      changeGrass();
+  
+    if (gCounter < 90) gCounter++;
+    else continueBtn.setVisible(true);
+  }
+}
 
-  if (gCounter == 0)
-    runSprinklerAnimation();
-  if (gCounter < 89)
-    drawGrass();
-  else
-    changeGrass();
-
-  if (gCounter < 90) gCounter++;
-  else continueBtn.setVisible(true);
+void loseScreen() {
+  background(#0000ff);
+  continueBtn.setVisible(true);
 }
 
 void scoresScreen() {
@@ -456,18 +469,18 @@ public void startGame() {
   startBtn.setVisible(false);
   scoresBtn.setVisible(false);
   movesLabel.setVisible(true);
+  backBtn.setVisible(true);
 }
 
 void checkIfWon() {
   if (tilesFlipped == tiles.size()) {
-    println("YOU WIN!");
     where = "loading";
     setWhere = "win";
 
     readTopScores(levelNumber);
     writeTopScores(levelNumber);
 
-    levelNumber++;
+    if (levelNumber < 4) levelNumber++;
   }
 }
 
@@ -484,7 +497,7 @@ void writeTopScores(int level) {
     }
   } 
   else {
-    writer.print(moves);
+    writer.print(moves+",");
   }
 
   writer.flush(); // write any buffered data to the file

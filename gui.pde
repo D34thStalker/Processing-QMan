@@ -49,6 +49,7 @@ public void score4_click1(GButton source, GEvent event) { //_CODE_:score4:905590
 } //_CODE_:score4:905590:
 
 public void backBtn_click1(GImageButton source, GEvent event) { //_CODE_:backBtn:418467:
+  if (!where.equals("scores")) clearGame();
   showMenu();
   println("backBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
 } //_CODE_:backBtn:418467:
@@ -75,8 +76,7 @@ public void createGUI(){
   title.setOpaque(false);
   startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "start.png", "start.png", "start.png" } );
   startBtn.addEventHandler(this, "startBtn_click1");
-  movesLabel = new GLabel(this, 20, 560, 300, 40);
-  movesLabel.setTextAlign(GAlign.LEFT, GAlign.MIDDLE);
+  movesLabel = new GLabel(this, 0, 560, 640, 40);
   movesLabel.setText("Total Steps: ");
   movesLabel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   movesLabel.setOpaque(false);
