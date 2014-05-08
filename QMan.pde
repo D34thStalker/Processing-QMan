@@ -187,10 +187,10 @@ void playGame() {
   enemies.add(new Enemy(tileMap[MAX_X_MAP-1][0], enemySprite));
   if (levelNumber > 2)
     enemies.add(new Enemy(tileMap[MAX_X_MAP-1][MAX_Y_MAP-1], enemySprite1));
-    
-    
+
+
   levelLabel.setText("Level " + levelNumber);
-    
+
   where = "game";
 }
 
@@ -243,10 +243,7 @@ void loading() {
 }
 
 void menu() {
-  title.setVisible(true);
-  startBtn.setVisible(true);
-  scoresBtn.setVisible(true);
-  movesLabel.setVisible(false);
+  background(loadImage("bg.jpg"));
 }
 
 void game() {
@@ -322,10 +319,10 @@ void scoresScreen() {
   textFont(f, 26);
   int scoreLength = topScores.length > 10 ? 10 : topScores.length;
   text("Level " + scoreLevel + " Scores", width/2, 250);
-  
+
   if (scoreLength == 0) {
     text("There are no scores yet.", width/2, 300);
-   return; 
+    return;
   }
   for (int i = 0; i < scoreLength; i++) {
     text((i+1) + ": " + topScores[i] + " Steps", width/2, 300+(i*25));
@@ -433,10 +430,15 @@ void setupSprinklers() {
 public void customGUI() {
   title.setFont(new Font("Dialog", Font.PLAIN, 24));
   movesLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
-  movesLabel.setVisible(false);
   levelLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
+
+  title.setVisible(true);
+  startBtn.setVisible(true);
+  scoresBtn.setVisible(true);
+  movesLabel.setVisible(false);
+  backBtn.setVisible(false);
   levelLabel.setVisible(false);
-  
+
   score1.setVisible(false);
   score2.setVisible(false);
   score3.setVisible(false);
@@ -444,8 +446,14 @@ public void customGUI() {
 }
 
 public void startGame() {
-  println("started");  
+  println("started"); 
   playGame();
+  
+  title.setVisible(false);
+  levelLabel.setVisible(true);
+  startBtn.setVisible(false);
+  scoresBtn.setVisible(false);
+  movesLabel.setVisible(true);
 }
 
 void checkIfWon() {
@@ -456,7 +464,7 @@ void checkIfWon() {
 
     readTopScores(levelNumber);
     writeTopScores(levelNumber);
-    
+
     levelNumber++;
   }
 }
@@ -492,20 +500,42 @@ void readTopScores(int level) {
   }
   if (line != null) {
     scores = split(line, ",");
-  } else {
-   scores = new String[0];
+  } 
+  else {
+    scores = new String[0];
   }
+}
+
+void showMenu() {
+  background(loadImage("bg.jpg"));
+  where = "menu";
+  title.setVisible(true);
+  startBtn.setVisible(true);
+  scoresBtn.setVisible(true);
+  movesLabel.setVisible(false);
+  backBtn.setVisible(false);
+  levelLabel.setVisible(false);
+
+  score1.setVisible(false);
+  score2.setVisible(false);
+  score3.setVisible(false);
+  score4.setVisible(false);
 }
 
 void showScores() {
   where = "scores";
   loadTopScores();
+  
+  backBtn.setVisible(true);
+  score1.setVisible(true);
+  score2.setVisible(true);
+  score3.setVisible(true);
+  score4.setVisible(true);
 }
 
 void loadTopScores() {
   readTopScores(scoreLevel);
   if (scores.length == 0) {
-    println("NO MORE");
     topScores = new int[0];
     return;
   }
