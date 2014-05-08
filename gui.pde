@@ -53,6 +53,11 @@ public void backBtn_click1(GImageButton source, GEvent event) { //_CODE_:backBtn
   println("backBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
 } //_CODE_:backBtn:418467:
 
+public void continueBtn_click1(GImageButton source, GEvent event) { //_CODE_:continueBtn:782909:
+  resetGame();
+  println("continueBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
+} //_CODE_:continueBtn:782909:
+
 
 
 // Create all the GUI controls. 
@@ -80,6 +85,7 @@ public void createGUI(){
   levelLabel = new GLabel(this, 0, 40, 640, 40);
   levelLabel.setText("Level");
   levelLabel.setTextBold();
+  levelLabel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   levelLabel.setOpaque(false);
   score1 = new GButton(this, 120, 140, 80, 30);
   score1.setText("Level 1");
@@ -95,6 +101,8 @@ public void createGUI(){
   score4.addEventHandler(this, "score4_click1");
   backBtn = new GImageButton(this, 20, 560, 120, 60, new String[] { "back.png", "back.png", "back.png" } );
   backBtn.addEventHandler(this, "backBtn_click1");
+  continueBtn = new GImageButton(this, 500, 560, 120, 60, new String[] { "back.png", "back.png", "back.png" } );
+  continueBtn.addEventHandler(this, "continueBtn_click1");
 }
 
 // Variable declarations 
@@ -109,4 +117,5 @@ GButton score2;
 GButton score3; 
 GButton score4; 
 GImageButton backBtn; 
+GImageButton continueBtn; 
 

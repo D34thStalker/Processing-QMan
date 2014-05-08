@@ -195,7 +195,7 @@ void playGame() {
 }
 
 void resetGame() {
-  println("Reset");
+  continueBtn.setVisible(false);
   switchToLevel(levelNumber);
   if (where.equals("win")) stopSprinklerAnimation();
   allTilesOnMap.clear();
@@ -305,6 +305,7 @@ void winScreen() {
     changeGrass();
 
   if (gCounter < 90) gCounter++;
+  else continueBtn.setVisible(true);
 }
 
 void scoresScreen() {
@@ -430,7 +431,7 @@ void setupSprinklers() {
 public void customGUI() {
   title.setFont(new Font("Dialog", Font.PLAIN, 24));
   movesLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
-  levelLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
+  levelLabel.setFont(new Font("Dialog", Font.BOLD, 28));
 
   title.setVisible(true);
   startBtn.setVisible(true);
@@ -438,6 +439,7 @@ public void customGUI() {
   movesLabel.setVisible(false);
   backBtn.setVisible(false);
   levelLabel.setVisible(false);
+  continueBtn.setVisible(false);
 
   score1.setVisible(false);
   score2.setVisible(false);
@@ -515,6 +517,7 @@ void showMenu() {
   movesLabel.setVisible(false);
   backBtn.setVisible(false);
   levelLabel.setVisible(false);
+  continueBtn.setVisible(false);
 
   score1.setVisible(false);
   score2.setVisible(false);
@@ -645,11 +648,11 @@ void keyPressed() {
   switch(key) {
   case 'r':
   case 'R':
-    if (!where.equals("menu") && !where.equals("scores")) {
-      for (Sprinkler s : sprinklers)
-        s.jump(0);
-      resetGame();
-    }
+//    if (!where.equals("menu") && !where.equals("scores")) {
+//      for (Sprinkler s : sprinklers)
+//        s.jump(0);
+//      resetGame();
+//    }
     break;
   case 'w':
   case 'W':
