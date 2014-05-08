@@ -22,7 +22,7 @@ Minim minim;
 String where = "";
 String setWhere = "";
 
-Integer levelNumber = 1;
+Integer levelNumber = 4;
 
 PFont f;
 
@@ -46,7 +46,7 @@ final int EAST = 3;
 final int MAX_X_MAP = 8;
 final int MAX_Y_MAP = 7;
 
-int obstacleCount = 5;
+int obstacleCount = 0;
 
 int tilesFlipped;
 int moves = 0;
@@ -60,7 +60,6 @@ ArrayList<PVector> allTilesOnMap;
 ArrayList<PVector> allAvailableTilesOnMap;
 ArrayList<Sprinkler> sprinklers;
 ArrayList<Obstacle> obstacles;
-
 
 int squirrelRot = 0;
 int sCounter = 0;
@@ -111,6 +110,24 @@ public void setup() {
   LoadImages();
 }
 
+
+void switchToLevel(int level) {
+  switch(level) {
+  case 1:
+    obstacleCount = 2;
+    break;
+  case 2:
+    obstacleCount = 3;
+    break;
+  case 3:
+    obstacleCount = 4;
+    break;
+  case 4:
+    obstacleCount = 5;
+    break;
+  }
+}
+
 void InstantiateSounds() {
   sprinklerSound = minim.loadSnippet("sprinkler.wav");
 }
@@ -127,7 +144,7 @@ void InstantiateLists() {
 }
 void LoadImages() {
 
-  for (int i = 0; i < obstacleCount; i++)
+  for (int i = 0; i < 5; i++)
     obstacleImages.add(loadImage("obstacles/obstacle"+i+".png"));
   dirtImage = loadImage("obstacles/dirt.png");
 
@@ -145,6 +162,8 @@ void LoadImages() {
 }
 
 void playGame() {
+  switchToLevel(levelNumber);
+  
   fillGridArray();
   createObstacles();
   createTileArray();
@@ -168,6 +187,7 @@ void playGame() {
 
 void resetGame() {
   println("Reset");
+  switchToLevel(levelNumber);
   if (where.equals("win")) stopSprinklerAnimation();
   allTilesOnMap.clear();
   allAvailableTilesOnMap.clear();
@@ -365,7 +385,7 @@ void createObstacles() {
     // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomPosition);
 
-    if (levelNumber == 1) 
+    if (levelNumber < 4) 
       obstacles.add(new Obstacle(randomPosition, dirtImage));
     else
       obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
