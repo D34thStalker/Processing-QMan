@@ -22,7 +22,7 @@ Minim minim;
 String where = "";
 String setWhere = "";
 
-Integer levelNumber = 4;
+Integer levelNumber = 1;
 
 PFont f;
 
@@ -71,14 +71,13 @@ Set<PVector> moveSet = new HashSet<PVector>();
 
 // IMAGES
 ArrayList<PImage> obstacleImages;
-PImage dirtImage;
+ArrayList<PImage> grassImages;
 ArrayList<Gif> sprinklerImages;
 Sprite playerSprite;
 Sprite enemySprite;
 Sprite enemySprite1;
 Sprite squirrelSprite;
 Sprite nutSprite;
-Gif grassImage;
 
 // Sounds
 AudioSnippet sprinklerSound;
@@ -89,6 +88,9 @@ BufferedReader reader;
 String line;
 String[] scores;
 int[] topScores;
+
+// Scores Scene
+int scoreLevel = 1;
 
 public void setup() {
   size(640, 640, JAVA2D);
@@ -140,13 +142,16 @@ void InstantiateLists() {
 
 
   obstacleImages = new ArrayList<PImage>();
+  grassImages = new ArrayList<PImage>();
   sprinklerImages = new ArrayList<Gif>();
 }
 void LoadImages() {
 
   for (int i = 0; i < 5; i++)
     obstacleImages.add(loadImage("obstacles/obstacle"+i+".png"));
-  dirtImage = loadImage("obstacles/dirt.png");
+
+  for (int i = 0; i < 4; i++)
+    grassImages.add(loadImage("grass/grass"+i+".png"));
 
 
   for (int i = 0; i < 2; i++)
@@ -158,12 +163,11 @@ void LoadImages() {
 
   squirrelSprite = new Sprite(this, "squirrel.png", 1, 1, 100);
   nutSprite = new Sprite(this, "nut.png", 1, 1, 100);
-  grassImage = new Gif(this, "grass.gif");
 }
 
 void playGame() {
   switchToLevel(levelNumber);
-  
+
   fillGridArray();
   createObstacles();
   createTileArray();
@@ -181,7 +185,12 @@ void playGame() {
   player = new Player(tileMap[0][0], playerSprite);
 
   enemies.add(new Enemy(tileMap[MAX_X_MAP-1][0], enemySprite));
-  enemies.add(new Enemy(tileMap[MAX_X_MAP-1][MAX_Y_MAP-1], enemySprite1));
+  if (levelNumber > 2)
+    enemies.add(new Enemy(tileMap[MAX_X_MAP-1][MAX_Y_MAP-1], enemySprite1));
+    
+    
+  levelLabel.setText("Level " + levelNumber);
+    
   where = "game";
 }
 
@@ -247,13 +256,15 @@ void game() {
   drawTiles();
   drawSprinklers();
 
-  if (isNut) nut.draw();
-  else {
-    double nut_probability = 0.005;
-    int randomNumber = (int)(random(0, 1000));
-    // println("randomNumber: " + randomNumber);
+  if (levelNumber > 2) {
+    if (isNut) nut.draw();
+    else {
+      double nut_probability = 0.005;
+      int randomNumber = (int)(random(0, 1000));
+      // println("randomNumber: " + randomNumber);
 
-    if (randomNumber <= nut_probability*1000) dropNut();
+      if (randomNumber <= nut_probability*1000) dropNut();
+    }
   }
 
   player.draw();
@@ -289,16 +300,13 @@ void winScreen() {
   drawObstacles();
   drawSprinklers();
 
-  switch(gCounter) {
-  case 0: 
-    grassImage.jump(0);
+  if (gCounter == 0)
     runSprinklerAnimation();
-    break;
-  case 89:
-    grassImage.play();
-    break;
-  }
-  drawGrass();
+  if (gCounter < 89)
+    drawGrass();
+  else
+    changeGrass();
+
   if (gCounter < 90) gCounter++;
 }
 
@@ -313,8 +321,14 @@ void scoresScreen() {
   text("TOP SCORES", width/2, 100);
   textFont(f, 26);
   int scoreLength = topScores.length > 10 ? 10 : topScores.length;
+  text("Level " + scoreLevel + " Scores", width/2, 250);
+  
+  if (scoreLength == 0) {
+    text("There are no scores yet.", width/2, 300);
+   return; 
+  }
   for (int i = 0; i < scoreLength; i++) {
-    text((i+1) + ": " + topScores[i] + " Steps", width/2, 200+(i*25));
+    text((i+1) + ": " + topScores[i] + " Steps", width/2, 300+(i*25));
   }
 }
 
@@ -386,7 +400,7 @@ void createObstacles() {
     allAvailableTilesOnMap.remove(randomPosition);
 
     if (levelNumber < 4) 
-      obstacles.add(new Obstacle(randomPosition, dirtImage));
+      obstacles.add(new Obstacle(randomPosition, grassImages.get(levelNumber-1)));
     else
       obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
   }
@@ -420,6 +434,13 @@ public void customGUI() {
   title.setFont(new Font("Dialog", Font.PLAIN, 24));
   movesLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
   movesLabel.setVisible(false);
+  levelLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
+  levelLabel.setVisible(false);
+  
+  score1.setVisible(false);
+  score2.setVisible(false);
+  score3.setVisible(false);
+  score4.setVisible(false);
 }
 
 public void startGame() {
@@ -433,15 +454,15 @@ void checkIfWon() {
     where = "loading";
     setWhere = "win";
 
+    readTopScores(levelNumber);
+    writeTopScores(levelNumber);
+    
     levelNumber++;
-
-    readTopScores();
-    writeTopScores();
   }
 }
 
-void writeTopScores() {
-  writer = createWriter("topScores.txt");
+void writeTopScores(int level) {
+  writer = createWriter("topScores"+level+".txt");
   if ( scores != null ) {
     String[] tempScores = new String[scores.length];
     for (int i = 0; i < scores.length-1; i++) {
@@ -460,8 +481,8 @@ void writeTopScores() {
   writer.close(); // close the file
 }
 
-void readTopScores() {
-  reader = createReader("topScores.txt");
+void readTopScores(int level) {
+  reader = createReader("topScores"+level+".txt");
   try {
     line = reader.readLine();
   } 
@@ -471,12 +492,23 @@ void readTopScores() {
   }
   if (line != null) {
     scores = split(line, ",");
+  } else {
+   scores = new String[0];
   }
 }
 
 void showScores() {
   where = "scores";
-  readTopScores();
+  loadTopScores();
+}
+
+void loadTopScores() {
+  readTopScores(scoreLevel);
+  if (scores.length == 0) {
+    println("NO MORE");
+    topScores = new int[0];
+    return;
+  }
   topScores = new int[scores.length-1];
   for (int i = 0; i < scores.length-1; i++) {
     topScores[i] = int(scores[i]);
@@ -491,15 +523,23 @@ void checkIfLost() {
       println("YOU LOSE!");
       where = "loading";
       setWhere = "lose";
+      levelNumber = 1;
     }
   }
 }
 
 void drawGrass() {
   for ( Tile t : tiles )
-    image(grassImage, t.getLoc().x, t.getLoc().y);
+    image(grassImages.get(levelNumber-2), t.getLoc().x, t.getLoc().y);
   for ( Obstacle o : obstacles )
-    image(grassImage, o.getLoc().x, o.getLoc().y);
+    image(grassImages.get(levelNumber-2), o.getLoc().x, o.getLoc().y);
+}
+
+void changeGrass() {
+  for ( Tile t : tiles )
+    image(grassImages.get(levelNumber-1), t.getLoc().x, t.getLoc().y);
+  for ( Obstacle o : obstacles )
+    image(grassImages.get(levelNumber-1), o.getLoc().x, o.getLoc().y);
 }
 
 void runSprinklerAnimation() {
