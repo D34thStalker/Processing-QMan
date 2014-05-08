@@ -448,7 +448,7 @@ public void customGUI() {
 public void startGame() {
   println("started"); 
   playGame();
-  
+
   title.setVisible(false);
   levelLabel.setVisible(true);
   startBtn.setVisible(false);
@@ -471,7 +471,7 @@ void checkIfWon() {
 
 void writeTopScores(int level) {
   writer = createWriter("topScores"+level+".txt");
-  if ( scores != null ) {
+  if ( scores != null && scores.length > 0) {
     String[] tempScores = new String[scores.length];
     for (int i = 0; i < scores.length-1; i++) {
       tempScores[i] = scores[i];
@@ -525,7 +525,7 @@ void showMenu() {
 void showScores() {
   where = "scores";
   loadTopScores();
-  
+
   backBtn.setVisible(true);
   score1.setVisible(true);
   score2.setVisible(true);
