@@ -154,7 +154,7 @@ void LoadImages() {
 
   playerSprite = new Sprite(this, "characters/qman.png", 1, 1, 100);
   enemySprite = new Sprite(this, "characters/security-guard.png", 1, 1, 100);
-  enemySprite1 = new Sprite(this, "characters/security-guard.png", 1, 1, 100);
+  enemySprite1 = new Sprite(this, "characters/security-guard-2.png", 1, 1, 100);
 
   squirrelSprite = new Sprite(this, "squirrel.png", 1, 1, 100);
   nutSprite = new Sprite(this, "nut.png", 1, 1, 100);
@@ -178,10 +178,10 @@ void playGame() {
   sCounter = 0;
   squirrelRot = 0;
 
-  player = new Player(new PVector(64, 100), playerSprite);
+  player = new Player(tileMap[0][0], playerSprite);
 
-  enemies.add(new Enemy(new PVector(512, 100), enemySprite));
-  enemies.add(new Enemy(new PVector(512, 484), enemySprite1));
+  enemies.add(new Enemy(tileMap[MAX_X_MAP-1][0], enemySprite));
+  enemies.add(new Enemy(tileMap[MAX_X_MAP-1][MAX_Y_MAP-1], enemySprite1));
   where = "game";
 }
 
