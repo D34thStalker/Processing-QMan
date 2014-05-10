@@ -74,7 +74,7 @@ public void createGUI(){
   title.setTextBold();
   title.setLocalColorScheme(GCScheme.RED_SCHEME);
   title.setOpaque(false);
-  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "start.png", "start.png", "start.png" } );
+  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "buttons/start.png", "buttons/start.png", "buttons/start.png" } );
   startBtn.addEventHandler(this, "startBtn_click1");
   movesLabel = new GLabel(this, 0, 560, 640, 40);
   movesLabel.setText("Total Steps: ");
@@ -99,9 +99,9 @@ public void createGUI(){
   score4 = new GButton(this, 420, 140, 80, 30);
   score4.setText("Level 4");
   score4.addEventHandler(this, "score4_click1");
-  backBtn = new GImageButton(this, 20, 560, 120, 60, new String[] { "back.png", "back.png", "back.png" } );
+  backBtn = new GImageButton(this, 20, 560, 120, 60, new String[] { "buttons/homeBtn.png", "buttons/homeBtn.png", "buttons/homeBtn.png" } );
   backBtn.addEventHandler(this, "backBtn_click1");
-  continueBtn = new GImageButton(this, 500, 560, 120, 60, new String[] { "back.png", "back.png", "back.png" } );
+  continueBtn = new GImageButton(this, 500, 560, 120, 60, new String[] { "buttons/continueBtn.png", "buttons/continueBtn.png", "buttons/continueBtn.png" } );
   continueBtn.addEventHandler(this, "continueBtn_click1");
 }
 
