@@ -19,6 +19,8 @@ import java.awt.*;
 
 Minim minim;
 
+AudioSnippet song;
+
 String where = "";
 String setWhere = "";
 
@@ -102,7 +104,6 @@ public void setup() {
 
   minim = new Minim(this);
 
-
   f = createFont("Verdana", 34, true);
 
   where = "menu";
@@ -132,6 +133,7 @@ void switchToLevel(int level) {
 
 void InstantiateSounds() {
   sprinklerSound = minim.loadSnippet("sprinkler.wav");
+  song = minim.loadSnippet("song.mp3");
 }
 
 void InstantiateLists() {
@@ -195,7 +197,11 @@ void playGame() {
 }
 
 void resetGame() {
+  for (Sprinkler s : sprinklers)
+    s.jump(0);
+    
   continueBtn.setVisible(false);
+  resetBtn.setVisible(false);
   switchToLevel(levelNumber);
   clearGame();
   playGame();
@@ -303,14 +309,14 @@ void winScreen() {
   if (levelNumber < 4) {
     drawObstacles();
     drawSprinklers();
-  
+
     if (gCounter == 0)
       runSprinklerAnimation();
     if (gCounter < 89)
       drawGrass();
     else
       changeGrass();
-  
+
     if (gCounter < 90) gCounter++;
     else continueBtn.setVisible(true);
   }
@@ -318,7 +324,7 @@ void winScreen() {
 
 void loseScreen() {
   background(#0000ff);
-  continueBtn.setVisible(true);
+  resetBtn.setVisible(true);
 }
 
 void scoresScreen() {
@@ -453,6 +459,7 @@ public void customGUI() {
   backBtn.setVisible(false);
   levelLabel.setVisible(false);
   continueBtn.setVisible(false);
+  resetBtn.setVisible(false);
 
   score1.setVisible(false);
   score2.setVisible(false);
@@ -463,6 +470,7 @@ public void customGUI() {
 public void startGame() {
   println("started"); 
   playGame();
+  song.loop();
 
   title.setVisible(false);
   levelLabel.setVisible(true);
@@ -479,8 +487,6 @@ void checkIfWon() {
 
     readTopScores(levelNumber);
     writeTopScores(levelNumber);
-
-    if (levelNumber < 4) levelNumber++;
   }
 }
 
@@ -531,6 +537,7 @@ void showMenu() {
   backBtn.setVisible(false);
   levelLabel.setVisible(false);
   continueBtn.setVisible(false);
+  resetBtn.setVisible(false);
 
   score1.setVisible(false);
   score2.setVisible(false);
@@ -576,16 +583,16 @@ void checkIfLost() {
 
 void drawGrass() {
   for ( Tile t : tiles )
-    image(grassImages.get(levelNumber-2), t.getLoc().x, t.getLoc().y);
+    image(grassImages.get(levelNumber-1), t.getLoc().x, t.getLoc().y);
   for ( Obstacle o : obstacles )
-    image(grassImages.get(levelNumber-2), o.getLoc().x, o.getLoc().y);
+    image(grassImages.get(levelNumber-1), o.getLoc().x, o.getLoc().y);
 }
 
 void changeGrass() {
   for ( Tile t : tiles )
-    image(grassImages.get(levelNumber-1), t.getLoc().x, t.getLoc().y);
+    image(grassImages.get(levelNumber), t.getLoc().x, t.getLoc().y);
   for ( Obstacle o : obstacles )
-    image(grassImages.get(levelNumber-1), o.getLoc().x, o.getLoc().y);
+    image(grassImages.get(levelNumber), o.getLoc().x, o.getLoc().y);
 }
 
 void runSprinklerAnimation() {
@@ -661,11 +668,10 @@ void keyPressed() {
   switch(key) {
   case 'r':
   case 'R':
-//    if (!where.equals("menu") && !where.equals("scores")) {
-//      for (Sprinkler s : sprinklers)
-//        s.jump(0);
-//      resetGame();
-//    }
+    //    if (!where.equals("menu") && !where.equals("scores")) {
+    //      
+    //      resetGame();
+    //    }
     break;
   case 'w':
   case 'W':

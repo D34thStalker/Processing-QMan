@@ -55,9 +55,15 @@ public void backBtn_click1(GImageButton source, GEvent event) { //_CODE_:backBtn
 } //_CODE_:backBtn:418467:
 
 public void continueBtn_click1(GImageButton source, GEvent event) { //_CODE_:continueBtn:782909:
+  levelNumber++;
   resetGame();
   println("continueBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
 } //_CODE_:continueBtn:782909:
+
+public void resetBtn_click1(GImageButton source, GEvent event) { //_CODE_:resetBtn:286580:
+  resetGame();
+  println("resetBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
+} //_CODE_:resetBtn:286580:
 
 
 
@@ -74,7 +80,7 @@ public void createGUI(){
   title.setTextBold();
   title.setLocalColorScheme(GCScheme.RED_SCHEME);
   title.setOpaque(false);
-  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "buttons/start.png", "buttons/start.png", "buttons/start.png" } );
+  startBtn = new GImageButton(this, 240, 220, 160, 60, new String[] { "start.png", "start.png", "start.png" } );
   startBtn.addEventHandler(this, "startBtn_click1");
   movesLabel = new GLabel(this, 0, 560, 640, 40);
   movesLabel.setText("Total Steps: ");
@@ -99,10 +105,12 @@ public void createGUI(){
   score4 = new GButton(this, 420, 140, 80, 30);
   score4.setText("Level 4");
   score4.addEventHandler(this, "score4_click1");
-  backBtn = new GImageButton(this, 20, 560, 120, 60, new String[] { "buttons/homeBtn.png", "buttons/homeBtn.png", "buttons/homeBtn.png" } );
+  backBtn = new GImageButton(this, 20, 560, 120, 60, new String[] { "homeBtn.png", "homeBtn.png", "homeBtn.png" } );
   backBtn.addEventHandler(this, "backBtn_click1");
-  continueBtn = new GImageButton(this, 500, 560, 120, 60, new String[] { "buttons/continueBtn.png", "buttons/continueBtn.png", "buttons/continueBtn.png" } );
+  continueBtn = new GImageButton(this, 500, 560, 120, 60, new String[] { "continueBtn.png", "continueBtn.png", "continueBtn.png" } );
   continueBtn.addEventHandler(this, "continueBtn_click1");
+  resetBtn = new GImageButton(this, 500, 560, 120, 60, new String[] { "resetBtn.png", "resetBtn.png", "resetBtn.png" } );
+  resetBtn.addEventHandler(this, "resetBtn_click1");
 }
 
 // Variable declarations 
@@ -118,4 +126,5 @@ GButton score3;
 GButton score4; 
 GImageButton backBtn; 
 GImageButton continueBtn; 
+GImageButton resetBtn; 
 
