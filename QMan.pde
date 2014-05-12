@@ -19,6 +19,7 @@ import java.awt.*;
 
 Minim minim;
 
+AudioSnippet theme;
 AudioSnippet song;
 
 String where = "";
@@ -111,6 +112,8 @@ public void setup() {
   InstantiateSounds();
   InstantiateLists();
   LoadImages();
+
+  theme.loop();
 }
 
 
@@ -133,6 +136,7 @@ void switchToLevel(int level) {
 
 void InstantiateSounds() {
   sprinklerSound = minim.loadSnippet("sprinkler.wav");
+  theme = minim.loadSnippet("theme.mp3");
   song = minim.loadSnippet("song.mp3");
 }
 
@@ -199,7 +203,7 @@ void playGame() {
 void resetGame() {
   for (Sprinkler s : sprinklers)
     s.jump(0);
-    
+
   continueBtn.setVisible(false);
   resetBtn.setVisible(false);
   switchToLevel(levelNumber);
@@ -471,6 +475,9 @@ public void startGame() {
   println("started"); 
   levelNumber = 1;
   playGame();
+
+  theme.cue(0);
+  theme.pause();
   song.loop();
 
   title.setVisible(false);
@@ -530,6 +537,13 @@ void readTopScores(int level) {
 
 void showMenu() {
   background(loadImage("bg.jpg"));
+
+  if (!where.equals("scores")) {
+    song.pause();
+    song.cue(0);
+    theme.loop();
+  }
+
   where = "menu";
   title.setVisible(true);
   startBtn.setVisible(true);
@@ -544,9 +558,6 @@ void showMenu() {
   score2.setVisible(false);
   score3.setVisible(false);
   score4.setVisible(false);
-  
-  song.pause();
-  song.cue(0);
 }
 
 void showScores() {
