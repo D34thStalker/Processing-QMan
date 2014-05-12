@@ -33,6 +33,8 @@ class Enemy extends MoveableObject {
 
     move(nextMove);
 
+    // println("UTILITY MAP: " + moveUtilityMap);
+
     clearUtilityMap();
   }
 
@@ -132,7 +134,7 @@ class Enemy extends MoveableObject {
 
     // WEST
     newPosition = getNextPosition(WEST);
-    if (newPosition.x > 0) {
+    if (newPosition.x >= 0) {
       obstacleToTest = new Obstacle(tileMap[(int)newPosition.x][(int)newPosition.y]);
       if (!obstacles.contains(obstacleToTest)) {
         newDistance = PVector.dist(newPosition, objectPosition);
