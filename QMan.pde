@@ -248,7 +248,7 @@ int loadingCounter = 0;
 void loading() {
   background(#0000ff);
   loadingCounter++;
-  if (loadingCounter >= 60) {
+  if (loadingCounter >= 15) {
     setScene(setWhere);
     loadingCounter = 0;
   }
@@ -469,6 +469,7 @@ public void customGUI() {
 
 public void startGame() {
   println("started"); 
+  levelNumber = 1;
   playGame();
   song.loop();
 
@@ -543,6 +544,9 @@ void showMenu() {
   score2.setVisible(false);
   score3.setVisible(false);
   score4.setVisible(false);
+  
+  song.pause();
+  song.cue(0);
 }
 
 void showScores() {
@@ -576,7 +580,7 @@ void checkIfLost() {
       println("YOU LOSE!");
       where = "loading";
       setWhere = "lose";
-      levelNumber = 1;
+      //levelNumber = 1;
     }
   }
 }
