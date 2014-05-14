@@ -197,18 +197,22 @@ void playGame() {
 
   levelLabel.setText("Level " + levelNumber);
 
-  where = "game";
+  setLoadUp("game");
 }
 
 void resetGame() {
   for (Sprinkler s : sprinklers)
     s.jump(0);
 
-  continueBtn.setVisible(false);
-  resetBtn.setVisible(false);
   switchToLevel(levelNumber);
   clearGame();
   playGame();
+
+  continueBtn.setVisible(false);
+  resetBtn.setVisible(false);
+  levelLabel.setVisible(true);
+  movesLabel.setVisible(true);
+  backBtn.setVisible(true);
 }
 
 void clearGame() {
@@ -241,6 +245,27 @@ public void draw() {
   if (where.equals("lose")) {
     loseScreen();
   }
+  if (where.equals("credits")) {
+    credits();
+  }
+}
+
+void setLoadUp(String w) {
+  where = "loading";
+  setWhere = w;
+
+  title.setVisible(false);
+  startBtn.setVisible(false);
+  movesLabel.setVisible(false);
+  scoresBtn.setVisible(false);
+  levelLabel.setVisible(false);
+  score1.setVisible(false);
+  score2.setVisible(false);
+  score3.setVisible(false);
+  score4.setVisible(false);
+  backBtn.setVisible(false);
+  continueBtn.setVisible(false);
+  resetBtn.setVisible(false);
 }
 
 void setScene(String scene) {
@@ -251,6 +276,7 @@ void setScene(String scene) {
 int loadingCounter = 0;
 void loading() {
   background(#0000ff);
+
   loadingCounter++;
   if (loadingCounter >= 15) {
     setScene(setWhere);
@@ -323,6 +349,10 @@ void winScreen() {
 
     if (gCounter < 90) gCounter++;
     else continueBtn.setVisible(true);
+  } 
+  else {
+    // THIS IS WHERE THE "PARTY" SCENE IS HAPPENING!!!
+    // YOU WON THE GAME!!!
   }
 }
 
@@ -337,6 +367,7 @@ void scoresScreen() {
   startBtn.setVisible(false);
   scoresBtn.setVisible(false);
 
+  fill(#ffffff);
   textAlign(CENTER);
   textFont(f, 30);
   text("TOP SCORES", width/2, 100);
@@ -351,6 +382,10 @@ void scoresScreen() {
   for (int i = 0; i < scoreLength; i++) {
     text((i+1) + ": " + topScores[i] + " Steps", width/2, 300+(i*25));
   }
+}
+
+void credits() {
+  background(#0000ff);
 }
 
 void drawObstacles() {
@@ -481,17 +516,16 @@ public void startGame() {
   song.loop();
 
   title.setVisible(false);
-  levelLabel.setVisible(true);
   startBtn.setVisible(false);
   scoresBtn.setVisible(false);
+  levelLabel.setVisible(true);
   movesLabel.setVisible(true);
   backBtn.setVisible(true);
 }
 
 void checkIfWon() {
   if (tilesFlipped == tiles.size()) {
-    where = "loading";
-    setWhere = "win";
+    setLoadUp("win");
 
     readTopScores(levelNumber);
     writeTopScores(levelNumber);
@@ -499,7 +533,7 @@ void checkIfWon() {
 }
 
 void writeTopScores(int level) {
-  writer = createWriter("topScores"+level+".txt");
+  writer = createWriter(dataPath("topScores"+level+".txt"));
   if ( scores != null && scores.length > 0) {
     String[] tempScores = new String[scores.length];
     for (int i = 0; i < scores.length-1; i++) {
@@ -519,7 +553,7 @@ void writeTopScores(int level) {
 }
 
 void readTopScores(int level) {
-  reader = createReader("topScores"+level+".txt");
+  reader = createReader(dataPath("topScores"+level+".txt"));
   try {
     line = reader.readLine();
   } 
@@ -544,7 +578,7 @@ void showMenu() {
     theme.loop();
   }
 
-  where = "menu";
+  setLoadUp("menu");
   title.setVisible(true);
   startBtn.setVisible(true);
   scoresBtn.setVisible(true);
@@ -561,7 +595,7 @@ void showMenu() {
 }
 
 void showScores() {
-  where = "scores";
+  setLoadUp("scores");
   loadTopScores();
 
   backBtn.setVisible(true);
@@ -589,9 +623,11 @@ void checkIfLost() {
   for ( Enemy e : enemies ) {
     if ( e.getSprite().bb_collision(player.getSprite()) ) {
       println("YOU LOSE!");
-      where = "loading";
-      setWhere = "lose";
+      setLoadUp("lose");
       //levelNumber = 1;
+      levelLabel.setVisible(true);
+      movesLabel.setVisible(true);
+      backBtn.setVisible(true);
     }
   }
 }
