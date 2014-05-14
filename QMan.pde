@@ -108,14 +108,11 @@ public void setup() {
 
   f = createFont("Verdana", 34, true);
 
-  //where = "menu";
-
   InstantiateSounds();
   InstantiateLists();
   LoadImages();
 
-  //theme.loop();
-  
+  //showMenu();
   showCredits();
 }
 
@@ -391,15 +388,15 @@ void scoresScreen() {
 float creditY = 0;
 void credits() {
   background(loadImage("bg.jpg"));
-  
+
   fill(#ff0000);
   textAlign(CENTER);
   textFont(f, 30);
-  
+
   text("QMAN", width/2, height-creditY);
   text("Developed by \n Michael Squitieri \n Julius Btesh", width/2-200, height+75-creditY, 400, 200);
   text("THANK YOU FOR PLAYING", width/2, height+350-creditY);
-  
+
   creditY += .75;
 }
 
@@ -599,6 +596,12 @@ void showMenu() {
     song.pause();
     song.cue(0);
     theme.loop();
+  } 
+  else {
+    score1.setVisible(false);
+    score2.setVisible(false);
+    score3.setVisible(false);
+    score4.setVisible(false);
   }
 
   setLoadUp("menu");
@@ -610,11 +613,6 @@ void showMenu() {
   levelLabel.setVisible(false);
   continueBtn.setVisible(false);
   resetBtn.setVisible(false);
-
-  score1.setVisible(false);
-  score2.setVisible(false);
-  score3.setVisible(false);
-  score4.setVisible(false);
 }
 
 void showScores() {
