@@ -397,7 +397,8 @@ void credits() {
   textFont(f, 30);
   
   text("QMAN", width/2, height-creditY);
-  text("Developed by \n Michael Squitieri \n Julius Btesh", width/2-200, height+20-creditY, 400, 200);
+  text("Developed by \n Michael Squitieri \n Julius Btesh", width/2-200, height+75-creditY, 400, 200);
+  text("THANK YOU FOR PLAYING", width/2, height+350-creditY);
   
   creditY += .75;
 }
