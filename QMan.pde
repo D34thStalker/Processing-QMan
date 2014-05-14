@@ -21,6 +21,7 @@ Minim minim;
 
 AudioSnippet theme;
 AudioSnippet song;
+AudioSnippet credit;
 
 String where = "";
 String setWhere = "";
@@ -107,13 +108,15 @@ public void setup() {
 
   f = createFont("Verdana", 34, true);
 
-  where = "menu";
+  //where = "menu";
 
   InstantiateSounds();
   InstantiateLists();
   LoadImages();
 
-  theme.loop();
+  //theme.loop();
+  
+  showCredits();
 }
 
 
@@ -138,6 +141,7 @@ void InstantiateSounds() {
   sprinklerSound = minim.loadSnippet("sprinkler.wav");
   theme = minim.loadSnippet("theme.mp3");
   song = minim.loadSnippet("song.mp3");
+  credit = minim.loadSnippet("credits.mp3");
 }
 
 void InstantiateLists() {
@@ -145,7 +149,6 @@ void InstantiateLists() {
   enemies = new ArrayList<Enemy>();
   obstacles = new ArrayList<Obstacle>();
   sprinklers = new ArrayList<Sprinkler>();
-
 
   obstacleImages = new ArrayList<PImage>();
   grassImages = new ArrayList<PImage>();
@@ -384,8 +387,27 @@ void scoresScreen() {
   }
 }
 
+
+float creditY = 0;
 void credits() {
-  background(#0000ff);
+  background(loadImage("bg.jpg"));
+  
+  fill(#ff0000);
+  textAlign(CENTER);
+  textFont(f, 30);
+  
+  text("QMAN", width/2, height-creditY);
+  text("Developed by \n Michael Squitieri \n Julius Btesh", width/2-200, height+20-creditY, 400, 200);
+  
+  creditY += .75;
+}
+
+void showCredits() {
+  setLoadUp("credits");
+
+  song.cue(0);
+  song.pause();
+  credit.play();
 }
 
 void drawObstacles() {
