@@ -118,8 +118,8 @@ public void setup() {
   InstantiateLists();
   LoadImages();
 
-  //showMenu();
-  showCredits();
+  showMenu();
+  //showCredits();
   background(brooklynCollegeBackgroundImage);
 }
 
@@ -151,6 +151,7 @@ void InstantiateSounds() {
   credit = minim.loadSnippet("credits.mp3");
   nut_sfx = minim.loadSnippet("nut_sfx.mp3");
   
+  sprinklerSound.setGain(-5);
   theme.setGain(-10);
   song.setGain(-10);
   credit.setGain(-10);
@@ -542,7 +543,7 @@ void credits() {
   textFont(f, 32);
   text("QMAN", width/2, height-creditY);
   textFont(f, 30);
-  text("Developed by \n Michael Squitieri \n Julius Btesh", width/2, height+75-creditY);
+  text("Developers \n Michael Squitieri \n Julius Btesh", width/2, height+75-creditY);
 
   // Images
   textFont(f, 32);
@@ -813,6 +814,7 @@ void showMenu() {
 
 void showScores() {
   setLoadUp("scores");
+  background(brickBackgroundImage);
   loadTopScores();
 
   backBtn.setVisible(true);
