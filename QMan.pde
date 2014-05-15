@@ -83,6 +83,8 @@ Sprite enemySprite1;
 Sprite squirrelSprite;
 Sprite nutSprite;
 
+ArrayList<Gif> winSceneImages;
+
 // Sounds
 AudioSnippet sprinklerSound;
 
@@ -150,6 +152,8 @@ void InstantiateLists() {
   obstacleImages = new ArrayList<PImage>();
   grassImages = new ArrayList<PImage>();
   sprinklerImages = new ArrayList<Gif>();
+
+  winSceneImages = new ArrayList<Gif>();
 }
 void LoadImages() {
 
@@ -169,6 +173,9 @@ void LoadImages() {
 
   squirrelSprite = new Sprite(this, "squirrel.png", 1, 1, 100);
   nutSprite = new Sprite(this, "nut.png", 1, 1, 100);
+
+  for (int i = 0; i < 5; i++)
+    winSceneImages.add(new Gif(this, "win/p"+i+".gif"));
 }
 
 void playGame() {
@@ -275,8 +282,6 @@ void setScene(String scene) {
 
 int loadingCounter = 0;
 void loading() {
-  background(#0000ff);
-
   loadingCounter++;
   if (loadingCounter >= 15) {
     setScene(setWhere);
@@ -353,6 +358,29 @@ void winScreen() {
   else {
     // THIS IS WHERE THE "PARTY" SCENE IS HAPPENING!!!
     // YOU WON THE GAME!!!
+    drawSprinklers();
+    drawGrass();
+
+    // PEOPLE
+    image(winSceneImages.get(0), tileMap[1][0].x, tileMap[1][0].y);
+    image(winSceneImages.get(1), tileMap[7][5].x, tileMap[7][5].y); 
+    image(winSceneImages.get(2), tileMap[5][1].x, tileMap[5][1].y);
+    image(winSceneImages.get(3), tileMap[2][6].x, tileMap[2][6].y);  
+
+    image(winSceneImages.get(4), tileMap[2][2].x, tileMap[2][2].y);
+    
+    // OBSTACLES
+    image(obstacleImages.get(0), tileMap[3][2].x, tileMap[3][2].y);
+    image(obstacleImages.get(1), tileMap[6][5].x, tileMap[6][5].y);
+    image(obstacleImages.get(2), tileMap[2][5].x, tileMap[2][5].y);
+    image(obstacleImages.get(3), tileMap[1][1].x, tileMap[1][1].y);
+    image(obstacleImages.get(4), tileMap[6][1].x, tileMap[6][1].y);
+    
+    fill(#ffffff);
+    textAlign(CENTER);
+    textFont(f, 30);
+    text("Congratulations!", width/2, height/2-100);
+    text("You've restored campus unity and \n Brooklyn College thanks you!", width/2, height/2);
   }
 }
 
@@ -362,7 +390,7 @@ float loseText2Y = 0;
 float loseIncrementY = 10;
 void loseScreen() {
   background(#0000ff);
-  
+
   rectMode(CORNER);
   drawObstacles();
   drawTiles();
@@ -372,9 +400,9 @@ void loseScreen() {
 
   for (Enemy e : enemies)
     e.draw();
-    
+
   resetBtn.setVisible(true);
-  
+
   fill(#ffffff);
   textAlign(CENTER);
   textFont(f, 30);
@@ -418,7 +446,7 @@ void credits() {
   textFont(f, 30);
 
   text("QMAN", width/2, height-creditY);
-  text("Developed by \n Michael Squitieri \n Julius Btesh", width/2-200, height+75-creditY, 400, 200);
+  text("Developed by \n Michael Squitieri \n Julius Btesh", width/2, height+75-creditY);
   text("THANK YOU FOR PLAYING", width/2, finalTextY);
 
   if (finalTextY > height/2) {
@@ -433,7 +461,7 @@ void showCredits() {
   song.cue(0);
   song.pause();
   credit.play();
-  
+
   finalTextY = height+550;
 }
 
@@ -556,8 +584,9 @@ public void customGUI() {
 }
 
 public void startGame() {
-  println("started"); 
-  levelNumber = 1;
+  println("started");
+  background(#0000ff); 
+  levelNumber = 4;
   playGame();
 
   theme.cue(0);
@@ -578,6 +607,11 @@ void checkIfWon() {
 
     readTopScores(levelNumber);
     writeTopScores(levelNumber);
+
+    if (levelNumber == 4) {
+      for (Gif g : winSceneImages)
+        g.play();
+    }
   }
 }
 
@@ -678,6 +712,7 @@ void checkIfLost() {
       levelLabel.setVisible(true);
       movesLabel.setVisible(true);
       backBtn.setVisible(true);
+      loseTextY = -150;
       loseText2Y = height + 500;
     }
   }
