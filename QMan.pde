@@ -450,7 +450,7 @@ void scoresScreen() {
 
 float creditY = 0;
 float finalTextY = 0;
-float creditIncrement = .75;
+float creditIncrement = 0.75;
 void credits() {
   background(loadImage("bg.jpg"));
   fill(#ff0000);
@@ -669,7 +669,12 @@ void readTopScores(int level) {
 void showMenu() {
   background(loadImage("bg.jpg"));
 
-  if (!where.equals("scores")) {
+  if (where.equals("credits")) {
+    credit.pause();
+    credit.cue(0);
+    theme.loop();
+  }
+  else if (!where.equals("scores")) {
     song.pause();
     song.cue(0);
     theme.loop();
