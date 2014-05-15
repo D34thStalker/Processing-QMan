@@ -345,6 +345,12 @@ void winScreen() {
     drawObstacles();
     drawSprinklers();
 
+    int text_y = 60;
+    fill(#ffffff);
+    textAlign(CENTER);
+    textFont(f, 30);
+    text("The grass is growing!", width/2, text_y);
+
     if (gCounter == 0)
       runSprinklerAnimation();
     if (gCounter < 89)
