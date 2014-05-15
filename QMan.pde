@@ -22,6 +22,7 @@ Minim minim;
 AudioSnippet theme;
 AudioSnippet song;
 AudioSnippet credit;
+AudioSnippet nut_sfx;
 
 String where = "";
 String setWhere = "";
@@ -121,6 +122,8 @@ public void setup() {
 
 
 void switchToLevel(int level) {
+  obstacleCount = level+1;
+  /*
   switch(level) {
   case 1:
     obstacleCount = 2;
@@ -135,6 +138,7 @@ void switchToLevel(int level) {
     obstacleCount = 5;
     break;
   }
+  */
 }
 
 void InstantiateSounds() {
@@ -142,6 +146,7 @@ void InstantiateSounds() {
   theme = minim.loadSnippet("theme.mp3");
   song = minim.loadSnippet("song.mp3");
   credit = minim.loadSnippet("credits.mp3");
+  nut_sfx = minim.loadSnippet("nut_sfx.mp3");
 }
 
 void InstantiateLists() {
@@ -315,12 +320,13 @@ void game() {
 
   player.draw();
 
+  
   moveSet.clear();
   for (Enemy e : enemies) { 
     if (e.readyToMove() && !stunEnemies) {
       e.setNextMove(player);
-      //Try to see if the next position is already taken by another enemy.
-      //If so, remove it from possible list of moves.
+      // Try to see if the next position is already taken by another enemy.
+      // If so, remove it from possible list of moves.
       if (!moveSet.add(e.getNextPosition())) {
         println("OVERLAP! REMOVING POSITION!");
         e.removeMove(e.getNextMove());
@@ -335,6 +341,7 @@ void game() {
   textAlign(CENTER);
   textFont(f, 24);
   text("Total Steps: " + moves, width/2, height-50);
+
   if (stunEnemies) stunTheEnemies();
   checkIfHitNut();
   checkIfWon();
@@ -873,6 +880,10 @@ void checkIfHitNut() {
     stunEnemies = true;
     isNut = false;
     nut = null;
+
+    nut_sfx.play();
+    nut_sfx.cue(0);
+
     squirrel = squirrelSprite;
   }
 }
