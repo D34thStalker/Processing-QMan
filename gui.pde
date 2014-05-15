@@ -55,8 +55,10 @@ public void backBtn_click1(GImageButton source, GEvent event) { //_CODE_:backBtn
 } //_CODE_:backBtn:418467:
 
 public void continueBtn_click1(GImageButton source, GEvent event) { //_CODE_:continueBtn:782909:
-  levelNumber++;
-  resetGame();
+  if (levelNumber < 4) {
+    levelNumber++;
+    resetGame();
+  } else showCredits();
   println("continueBtn - GImageButton event occured " + System.currentTimeMillis()%10000000 );
 } //_CODE_:continueBtn:782909:
 

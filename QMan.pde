@@ -174,7 +174,7 @@ void LoadImages() {
   squirrelSprite = new Sprite(this, "squirrel.png", 1, 1, 100);
   nutSprite = new Sprite(this, "nut.png", 1, 1, 100);
 
-  for (int i = 0; i < 5; i++)
+  for (int i = 0; i < 7; i++)
     winSceneImages.add(new Gif(this, "win/p"+i+".gif"));
 }
 
@@ -345,11 +345,10 @@ void winScreen() {
     drawObstacles();
     drawSprinklers();
 
-    int text_y = 60;
     fill(#ffffff);
     textAlign(CENTER);
     textFont(f, 30);
-    text("The grass is growing!", width/2, text_y);
+    text("The grass is growing!", width/2, 60);
 
     if (gCounter == 0)
       runSprinklerAnimation();
@@ -373,20 +372,27 @@ void winScreen() {
     image(winSceneImages.get(2), tileMap[5][1].x, tileMap[5][1].y);
     image(winSceneImages.get(3), tileMap[2][6].x, tileMap[2][6].y);  
 
+    // QMAN
     image(winSceneImages.get(4), tileMap[2][2].x, tileMap[2][2].y);
-    
+
+    // GUARDS
+    image(winSceneImages.get(5), tileMap[6][6].x, tileMap[6][6].y);
+    image(winSceneImages.get(6), tileMap[5][6].x, tileMap[5][6].y);
+
     // OBSTACLES
     image(obstacleImages.get(0), tileMap[3][2].x, tileMap[3][2].y);
     image(obstacleImages.get(1), tileMap[6][5].x, tileMap[6][5].y);
     image(obstacleImages.get(2), tileMap[2][5].x, tileMap[2][5].y);
     image(obstacleImages.get(3), tileMap[1][1].x, tileMap[1][1].y);
     image(obstacleImages.get(4), tileMap[6][1].x, tileMap[6][1].y);
-    
+
     fill(#ffffff);
     textAlign(CENTER);
     textFont(f, 30);
     text("Congratulations!", width/2, height/2-100);
     text("You've restored campus unity and \n Brooklyn College thanks you!", width/2, height/2);
+
+    continueBtn.setVisible(true);
   }
 }
 
@@ -458,7 +464,9 @@ void credits() {
   if (finalTextY > height/2) {
     creditY += creditIncrement;
     finalTextY -= creditIncrement;
-  }
+  } 
+  else
+    backBtn.setVisible(true);
 }
 
 void showCredits() {
