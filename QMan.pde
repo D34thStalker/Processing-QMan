@@ -84,6 +84,7 @@ Sprite squirrelSprite;
 Sprite nutSprite;
 
 ArrayList<Gif> winSceneImages;
+ArrayList<PImage> winSceneSImages;
 
 // Sounds
 AudioSnippet sprinklerSound;
@@ -154,6 +155,7 @@ void InstantiateLists() {
   sprinklerImages = new ArrayList<Gif>();
 
   winSceneImages = new ArrayList<Gif>();
+  winSceneSImages = new ArrayList<PImage>();
 }
 void LoadImages() {
 
@@ -176,6 +178,9 @@ void LoadImages() {
 
   for (int i = 0; i < 7; i++)
     winSceneImages.add(new Gif(this, "win/p"+i+".gif"));
+
+  for (int i = 0; i < 4; i++)
+    winSceneSImages.add(loadImage("win/s"+i+".png"));
 }
 
 void playGame() {
@@ -316,20 +321,20 @@ void game() {
   //println(pointToTileMapPosition.get(player.getLoc()));
 
   moveSet.clear();
-  for (Enemy e : enemies) { 
-    if (e.readyToMove() && !stunEnemies) {
-      e.setNextMove(player);
-      // Try to see if the next position is already taken by another enemy.
-      // If so, remove it from possible list of moves.
-      if (!moveSet.add(e.getNextPosition())) {
-        println("OVERLAP! REMOVING POSITION!");
-        e.removeMove(e.getNextMove());
-      }
-      e.chase(player);
-    }
-    e.incrementMoveTimer();
-    e.draw();
-  }
+  //  for (Enemy e : enemies) { 
+  //    if (e.readyToMove() && !stunEnemies) {
+  //      e.setNextMove(player);
+  //      // Try to see if the next position is already taken by another enemy.
+  //      // If so, remove it from possible list of moves.
+  //      if (!moveSet.add(e.getNextPosition())) {
+  //        println("OVERLAP! REMOVING POSITION!");
+  //        e.removeMove(e.getNextMove());
+  //      }
+  //      e.chase(player);
+  //    }
+  //    e.incrementMoveTimer();
+  //    e.draw();
+  //  }
 
   movesLabel.setText("Total Steps: " + moves);
   if (stunEnemies) stunTheEnemies();
@@ -379,6 +384,9 @@ void winScreen() {
     image(winSceneImages.get(5), tileMap[6][6].x, tileMap[6][6].y);
     image(winSceneImages.get(6), tileMap[5][6].x, tileMap[5][6].y);
 
+    // SQUIRRELS
+    drawWinSquirrels();
+
     // OBSTACLES
     image(obstacleImages.get(0), tileMap[3][2].x, tileMap[3][2].y);
     image(obstacleImages.get(1), tileMap[6][5].x, tileMap[6][5].y);
@@ -393,6 +401,61 @@ void winScreen() {
     text("You've restored campus unity and \n Brooklyn College thanks you!", width/2, height/2);
 
     continueBtn.setVisible(true);
+  }
+}
+
+int wsCounter = 0;
+int wsCounter2 = 0;
+int wsX = 0;
+int wsY = 0;
+int wSquirrel = 0;
+int wSquirrel2 = 0;
+void drawWinSquirrels() {
+  switch(wSquirrel) {
+  case 0:
+    if (wsCounter == 15 && wsX < 6) {
+      wsCounter = 0;
+      wsX++;
+    } 
+
+    wsCounter++;
+
+    image(winSceneSImages.get(0), tileMap[wsX][4].x, tileMap[wsX][4].y);
+    if (wsX == 6) wSquirrel = 1;
+    break;
+  case 1:
+    if (wsCounter == 15 && wsX > 1) {
+      wsCounter = 0;
+      wsX--;
+    } 
+
+    wsCounter++;
+    image(winSceneSImages.get(1), tileMap[wsX][4].x, tileMap[wsX][4].y);
+    if (wsX == 1) wSquirrel = 0;
+    break;
+  }
+  switch(wSquirrel2) {
+  case 0:
+    if (wsCounter2 == 15 && wsY < 5) {
+      wsCounter2 = 0;
+      wsY++;
+    } 
+
+    wsCounter2++;
+
+    image(winSceneSImages.get(3), tileMap[0][wsY].x, tileMap[0][wsY].y);
+    if (wsY == 5) wSquirrel2 = 1;
+    break;
+  case 1:
+    if (wsCounter2 == 15 && wsY > 1) {
+      wsCounter2 = 0;
+      wsY--;
+    } 
+
+    wsCounter2++;
+    image(winSceneSImages.get(2), tileMap[0][wsY].x, tileMap[0][wsY].y);
+    if (wsY == 1) wSquirrel2 = 0;
+    break;
   }
 }
 
@@ -600,6 +663,16 @@ public void customGUI() {
 public void startGame() {
   println("started");
   background(#0000ff); 
+
+  // WIN SCENE VARIABLES RESET
+  wsCounter = 0;
+  wsCounter2 = 0;
+  wsX = 0;
+  wsY = 0;
+  wSquirrel = 0;
+  wSquirrel2 = 0;
+
+
   levelNumber = 1;
   playGame();
 
