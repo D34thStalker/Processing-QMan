@@ -600,7 +600,7 @@ public void customGUI() {
 public void startGame() {
   println("started");
   background(#0000ff); 
-  levelNumber = 4;
+  levelNumber = 1;
   playGame();
 
   theme.cue(0);
