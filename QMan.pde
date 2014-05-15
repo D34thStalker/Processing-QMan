@@ -112,8 +112,8 @@ public void setup() {
   InstantiateLists();
   LoadImages();
 
-  //showMenu();
-  showCredits();
+  showMenu();
+  //showCredits();
 }
 
 
@@ -356,9 +356,32 @@ void winScreen() {
   }
 }
 
+
+float loseTextY = -150;
+float loseText2Y = 0;
+float loseIncrementY = 10;
 void loseScreen() {
   background(#0000ff);
+  
+  rectMode(CORNER);
+  drawObstacles();
+  drawTiles();
+  drawSprinklers();
+
+  player.draw();
+
+  for (Enemy e : enemies)
+    e.draw();
+    
   resetBtn.setVisible(true);
+  
+  fill(#ffffff);
+  textAlign(CENTER);
+  textFont(f, 30);
+  text("Oh No! \n You've been thrown off campus!", width/2, loseTextY);
+  text("Try Again?", width/2, loseText2Y);
+  if (loseTextY < height/2-100) loseTextY += loseIncrementY;
+  if (loseText2Y > height/2) loseText2Y -= loseIncrementY;
 }
 
 void scoresScreen() {
@@ -655,6 +678,7 @@ void checkIfLost() {
       levelLabel.setVisible(true);
       movesLabel.setVisible(true);
       backBtn.setVisible(true);
+      loseText2Y = height + 500;
     }
   }
 }
