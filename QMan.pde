@@ -22,7 +22,6 @@ Minim minim;
 AudioSnippet theme;
 AudioSnippet song;
 AudioSnippet credit;
-AudioSnippet nut_sfx;
 
 String where = "";
 String setWhere = "";
@@ -89,6 +88,7 @@ ArrayList<PImage> winSceneSImages;
 
 // Sounds
 AudioSnippet sprinklerSound;
+AudioSnippet nut_sfx;
 
 // DATA
 PrintWriter writer;
@@ -116,8 +116,8 @@ public void setup() {
   InstantiateLists();
   LoadImages();
 
-  showMenu();
-  //showCredits();
+  //showMenu();
+  showCredits();
 }
 
 
@@ -125,20 +125,20 @@ void switchToLevel(int level) {
   obstacleCount = level+1;
   /*
   switch(level) {
-  case 1:
-    obstacleCount = 2;
-    break;
-  case 2:
-    obstacleCount = 3;
-    break;
-  case 3:
-    obstacleCount = 4;
-    break;
-  case 4:
-    obstacleCount = 5;
-    break;
-  }
-  */
+   case 1:
+   obstacleCount = 2;
+   break;
+   case 2:
+   obstacleCount = 3;
+   break;
+   case 3:
+   obstacleCount = 4;
+   break;
+   case 4:
+   obstacleCount = 5;
+   break;
+   }
+   */
 }
 
 void InstantiateSounds() {
@@ -147,6 +147,10 @@ void InstantiateSounds() {
   song = minim.loadSnippet("song.mp3");
   credit = minim.loadSnippet("credits.mp3");
   nut_sfx = minim.loadSnippet("nut_sfx.mp3");
+  
+  theme.setGain(-10);
+  song.setGain(-10);
+  credit.setGain(-10);
 }
 
 void InstantiateLists() {
@@ -302,7 +306,7 @@ void game() {
   drawObstacles();
   drawTiles();
   drawSprinklers();
-  
+
   fill(#ffffff);
   textAlign(CENTER);
   textFont(f, 28);
@@ -320,7 +324,7 @@ void game() {
 
   player.draw();
 
-  
+
   moveSet.clear();
   for (Enemy e : enemies) { 
     if (e.readyToMove() && !stunEnemies) {
