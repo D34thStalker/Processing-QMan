@@ -218,9 +218,6 @@ void playGame() {
   if (levelNumber > 2)
     enemies.add(new Enemy(tileMap[MAX_X_MAP-1][MAX_Y_MAP-1], enemySprite1));
 
-
-  levelLabel.setText("Level " + levelNumber);
-
   setLoadUp("game");
 }
 
@@ -234,8 +231,6 @@ void resetGame() {
 
   continueBtn.setVisible(false);
   resetBtn.setVisible(false);
-  levelLabel.setVisible(true);
-  movesLabel.setVisible(true);
   backBtn.setVisible(true);
 }
 
@@ -280,9 +275,7 @@ void setLoadUp(String w) {
 
   title.setVisible(false);
   startBtn.setVisible(false);
-  movesLabel.setVisible(false);
   scoresBtn.setVisible(false);
-  levelLabel.setVisible(false);
   score1.setVisible(false);
   score2.setVisible(false);
   score3.setVisible(false);
@@ -318,20 +311,22 @@ void game() {
   drawTiles();
   drawSprinklers();
 
+  fill(#ffffff);
+  textAlign(CENTER);
+  textFont(f, 28);
+  text("Level " + levelNumber, width/2, 75);
+
   if (levelNumber > 2) {
     if (isNut) nut.draw();
     else {
       double nut_probability = 0.005;
       int randomNumber = (int)(random(0, 1000));
-      // println("randomNumber: " + randomNumber);
 
       if (randomNumber <= nut_probability*1000) dropNut();
     }
   }
 
   player.draw();
-
-  //println(pointToTileMapPosition.get(player.getLoc()));
 
   moveSet.clear();
   for (Enemy e : enemies) {
@@ -349,12 +344,15 @@ void game() {
     e.draw();
   }
 
-  movesLabel.setText("Total Steps: " + moves);
+  fill(#ffffff);
+  textAlign(CENTER);
+  textFont(f, 24);
+  text("Total Steps: " + moves, width/2, height-50);
+
   if (stunEnemies) stunTheEnemies();
   checkIfHitNut();
   checkIfWon();
   checkIfLost();
-  // println("tilesFlipped : " + tilesFlipped);
 }
 
 void winScreen() {
@@ -536,11 +534,40 @@ void credits() {
   background(brickBackgroundImage);
   fill(#ffffff);
   textAlign(CENTER);
-  textFont(f, 30);
 
+  textFont(f, 32);
   text("QMAN", width/2, height-creditY);
+  textFont(f, 30);
   text("Developed by \n Michael Squitieri \n Julius Btesh", width/2, height+75-creditY);
-  text("THANK YOU FOR PLAYING", width/2, finalTextY);
+
+  // Images
+  textFont(f, 32);
+  text("Images", width/2, height+300-creditY);
+  textFont(f, 20);
+  text("Guitar \n http://piq.codeus.net/u/nessie", width/2, height+340-creditY);
+  text("Nut \n http://7soul1.deviantart.com/art/ \n 420-Pixel-Art-Icons-for-RPG-129892453", width/2, height+410-creditY);
+  text("Macbook \n http://piq.codeus.net/u/joseki", width/2, height+510-creditY);
+  text("Skateboard \n http://piq.codeus.net/u/LouisxD", width/2, height+580-creditY);
+  text("Pokeball \n http://piq.codeus.net/u/pixellord", width/2, height+650-creditY);
+  text("Batman \n http://piq.codeus.net/u/THEPIXELMAN11", width/2, height+720-creditY);
+  text("Shroom \n http://piq.codeus.net/u/students", width/2, height+790-creditY);
+  text("Mario \n http://piq.codeus.net/u/mario%20fan47", width/2, height+860-creditY);
+  text("Link \n http://piq.codeus.net/u/NoobMaker2000", width/2, height+930-creditY);
+  text("Book \n http://sharandula.deviantart.com/art/book-262383889", width/2, height+1000-creditY);
+  text("Sword \n http://piq.codeus.net/u/TheAMS64", width/2, height+1070-creditY);
+  text("Sonic \n http://piq.codeus.net/u/Bossdude101", width/2, height+1140-creditY);
+  text("Pencil \n http://piq.codeus.net/u/Spencer", width/2, height+1210-creditY);
+
+  // Songs
+  textFont(f, 32);
+  text("Music", width/2, height+1400-creditY);
+  textFont(f, 20);
+  text("Legend of Zelda Theme Song (8-Bit) \n (Youtube) : supersamster50", width/2, height+1440-creditY);
+  text("Get Lucky - Daft Punk (8-Bit) \n (Youtube) : rakohus", width/2, height+1510-creditY);
+  text("Radioactive - Imagine Dragons (8-Bit) \n (Youtube) : bisXIII", width/2, height+1580-creditY);
+
+  textFont(f, 32);
+  text("THANK YOU FOR PLAYING!", width/2, finalTextY);
 
   if (finalTextY > height/2) {
     creditY += creditIncrement;
@@ -557,7 +584,7 @@ void showCredits() {
   song.pause();
   credit.play();
 
-  finalTextY = height+550;
+  finalTextY = height+2000;
 }
 
 void drawObstacles() {
@@ -660,15 +687,11 @@ void setupSprinklers() {
 // to customise the GUI controls
 public void customGUI() {
   title.setFont(new Font("Dialog", Font.PLAIN, 24));
-  movesLabel.setFont(new Font("Dialog", Font.PLAIN, 24));
-  levelLabel.setFont(new Font("Dialog", Font.BOLD, 28));
 
   title.setVisible(true);
   startBtn.setVisible(true);
   scoresBtn.setVisible(true);
-  movesLabel.setVisible(false);
   backBtn.setVisible(false);
-  levelLabel.setVisible(false);
   continueBtn.setVisible(false);
   resetBtn.setVisible(false);
 
@@ -701,8 +724,6 @@ public void startGame() {
   title.setVisible(false);
   startBtn.setVisible(false);
   scoresBtn.setVisible(false);
-  levelLabel.setVisible(true);
-  movesLabel.setVisible(true);
   backBtn.setVisible(true);
 }
 
@@ -781,9 +802,7 @@ void showMenu() {
   title.setVisible(true);
   startBtn.setVisible(true);
   scoresBtn.setVisible(true);
-  movesLabel.setVisible(false);
   backBtn.setVisible(false);
-  levelLabel.setVisible(false);
   continueBtn.setVisible(false);
   resetBtn.setVisible(false);
 }
@@ -819,8 +838,6 @@ void checkIfLost() {
       println("YOU LOSE!");
       setLoadUp("lose");
       //levelNumber = 1;
-      levelLabel.setVisible(true);
-      movesLabel.setVisible(true);
       backBtn.setVisible(true);
       loseTextY = -150;
       loseText2Y = height + 500;
