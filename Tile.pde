@@ -8,8 +8,8 @@ class Tile {
   private ArrayList<Integer> tileColors = new ArrayList<Integer>();
   private int currentColorIndex;
 
-  public static final color GOAL_COLOR = #00ff00;
-  public static final color DEFAULT_COLOR = #ff0000;
+  public static final color GOAL_COLOR = #00EE00;
+  public static final color DEFAULT_COLOR = #CC0000;
 
   public Tile(PVector _loc) {
     loc = _loc;
