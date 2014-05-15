@@ -22,6 +22,7 @@ Minim minim;
 AudioSnippet theme;
 AudioSnippet song;
 AudioSnippet credit;
+AudioSnippet nut_sfx;
 
 String where = "";
 String setWhere = "";
@@ -121,6 +122,8 @@ public void setup() {
 
 
 void switchToLevel(int level) {
+  obstacleCount = level+1;
+  /*
   switch(level) {
   case 1:
     obstacleCount = 2;
@@ -135,6 +138,7 @@ void switchToLevel(int level) {
     obstacleCount = 5;
     break;
   }
+  */
 }
 
 void InstantiateSounds() {
@@ -142,6 +146,7 @@ void InstantiateSounds() {
   theme = minim.loadSnippet("theme.mp3");
   song = minim.loadSnippet("song.mp3");
   credit = minim.loadSnippet("credits.mp3");
+  nut_sfx = minim.loadSnippet("nut_sfx.mp3");
 }
 
 void InstantiateLists() {
@@ -319,22 +324,22 @@ void game() {
   player.draw();
 
   //println(pointToTileMapPosition.get(player.getLoc()));
-
+  
   moveSet.clear();
-  //  for (Enemy e : enemies) { 
-  //    if (e.readyToMove() && !stunEnemies) {
-  //      e.setNextMove(player);
-  //      // Try to see if the next position is already taken by another enemy.
-  //      // If so, remove it from possible list of moves.
-  //      if (!moveSet.add(e.getNextPosition())) {
-  //        println("OVERLAP! REMOVING POSITION!");
-  //        e.removeMove(e.getNextMove());
-  //      }
-  //      e.chase(player);
-  //    }
-  //    e.incrementMoveTimer();
-  //    e.draw();
-  //  }
+  for (Enemy e : enemies) { 
+    if (e.readyToMove() && !stunEnemies) {
+      e.setNextMove(player);
+      // Try to see if the next position is already taken by another enemy.
+      // If so, remove it from possible list of moves.
+      if (!moveSet.add(e.getNextPosition())) {
+        println("OVERLAP! REMOVING POSITION!");
+        e.removeMove(e.getNextMove());
+      }
+      e.chase(player);
+    }
+    e.incrementMoveTimer();
+    e.draw();
+  }
 
   movesLabel.setText("Total Steps: " + moves);
   if (stunEnemies) stunTheEnemies();
@@ -857,6 +862,10 @@ void checkIfHitNut() {
     stunEnemies = true;
     isNut = false;
     nut = null;
+
+    nut_sfx.play();
+    nut_sfx.cue(0);
+
     squirrel = squirrelSprite;
   }
 }
