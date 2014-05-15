@@ -86,14 +86,12 @@ public void createGUI(){
   startBtn.addEventHandler(this, "startBtn_click1");
   movesLabel = new GLabel(this, 0, 560, 640, 40);
   movesLabel.setText("Total Steps: ");
-  movesLabel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   movesLabel.setOpaque(false);
   scoresBtn = new GImageButton(this, 240, 300, 160, 60, new String[] { "scores.png", "scores.png", "scores.png" } );
   scoresBtn.addEventHandler(this, "scoresBtn_click1");
   levelLabel = new GLabel(this, 0, 40, 640, 40);
   levelLabel.setText("Level");
   levelLabel.setTextBold();
-  levelLabel.setLocalColorScheme(GCScheme.YELLOW_SCHEME);
   levelLabel.setOpaque(false);
   score1 = new GButton(this, 120, 140, 80, 30);
   score1.setText("Level 1");

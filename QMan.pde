@@ -87,6 +87,9 @@ Sprite nutSprite;
 ArrayList<Gif> winSceneImages;
 ArrayList<PImage> winSceneSImages;
 
+PImage brooklynCollegeBackgroundImage;
+PImage brickBackgroundImage;
+
 // Sounds
 AudioSnippet sprinklerSound;
 
@@ -106,7 +109,6 @@ public void setup() {
   createGUI();
   customGUI();
   // Place your setup code here
-  background(loadImage("bg.jpg"));
 
   minim = new Minim(this);
 
@@ -115,6 +117,8 @@ public void setup() {
   InstantiateSounds();
   InstantiateLists();
   LoadImages();
+
+  background(brooklynCollegeBackgroundImage);
 
   showMenu();
   //showCredits();
@@ -186,6 +190,9 @@ void LoadImages() {
 
   for (int i = 0; i < 4; i++)
     winSceneSImages.add(loadImage("win/s"+i+".png"));
+
+  brooklynCollegeBackgroundImage = loadImage("backgrounds/bg.jpg");
+  brickBackgroundImage = loadImage("backgrounds/brick-background.jpg");
 }
 
 void playGame() {
@@ -300,11 +307,12 @@ void loading() {
 }
 
 void menu() {
-  background(loadImage("bg.jpg"));
+  background(brooklynCollegeBackgroundImage);
 }
 
 void game() {
-  background(#0000ff);
+  // background(#0000ff);
+  background(brickBackgroundImage);
   rectMode(CORNER);
   drawObstacles();
   drawTiles();
@@ -324,9 +332,9 @@ void game() {
   player.draw();
 
   //println(pointToTileMapPosition.get(player.getLoc()));
-  
+
   moveSet.clear();
-  for (Enemy e : enemies) { 
+  for (Enemy e : enemies) {
     if (e.readyToMove() && !stunEnemies) {
       e.setNextMove(player);
       // Try to see if the next position is already taken by another enemy.
@@ -350,7 +358,8 @@ void game() {
 }
 
 void winScreen() {
-  background(#0000ff);
+  background(brickBackgroundImage);
+  // background(#0000ff);
   if (levelNumber < 4) {
     drawObstacles();
     drawSprinklers();
@@ -369,7 +378,7 @@ void winScreen() {
 
     if (gCounter < 90) gCounter++;
     else continueBtn.setVisible(true);
-  } 
+  }
   else {
     // THIS IS WHERE THE "PARTY" SCENE IS HAPPENING!!!
     // YOU WON THE GAME!!!
@@ -378,9 +387,9 @@ void winScreen() {
 
     // PEOPLE
     image(winSceneImages.get(0), tileMap[1][0].x, tileMap[1][0].y);
-    image(winSceneImages.get(1), tileMap[7][5].x, tileMap[7][5].y); 
+    image(winSceneImages.get(1), tileMap[7][5].x, tileMap[7][5].y);
     image(winSceneImages.get(2), tileMap[5][1].x, tileMap[5][1].y);
-    image(winSceneImages.get(3), tileMap[2][6].x, tileMap[2][6].y);  
+    image(winSceneImages.get(3), tileMap[2][6].x, tileMap[2][6].y);
 
     // QMAN
     image(winSceneImages.get(4), tileMap[2][2].x, tileMap[2][2].y);
@@ -421,7 +430,7 @@ void drawWinSquirrels() {
     if (wsCounter == 15 && wsX < 6) {
       wsCounter = 0;
       wsX++;
-    } 
+    }
 
     wsCounter++;
 
@@ -432,7 +441,7 @@ void drawWinSquirrels() {
     if (wsCounter == 15 && wsX > 1) {
       wsCounter = 0;
       wsX--;
-    } 
+    }
 
     wsCounter++;
     image(winSceneSImages.get(1), tileMap[wsX][4].x, tileMap[wsX][4].y);
@@ -444,7 +453,7 @@ void drawWinSquirrels() {
     if (wsCounter2 == 15 && wsY < 5) {
       wsCounter2 = 0;
       wsY++;
-    } 
+    }
 
     wsCounter2++;
 
@@ -455,7 +464,7 @@ void drawWinSquirrels() {
     if (wsCounter2 == 15 && wsY > 1) {
       wsCounter2 = 0;
       wsY--;
-    } 
+    }
 
     wsCounter2++;
     image(winSceneSImages.get(2), tileMap[0][wsY].x, tileMap[0][wsY].y);
@@ -469,7 +478,8 @@ float loseTextY = -150;
 float loseText2Y = 0;
 float loseIncrementY = 10;
 void loseScreen() {
-  background(#0000ff);
+  // background(#0000ff);
+  background(brickBackgroundImage);
 
   rectMode(CORNER);
   drawObstacles();
@@ -494,7 +504,9 @@ void loseScreen() {
 
 void scoresScreen() {
   // Show the top scores
-  background(#0000ff);
+  // background(#0000ff);
+  background(brickBackgroundImage);
+
   startBtn.setVisible(false);
   scoresBtn.setVisible(false);
 
@@ -520,8 +532,9 @@ float creditY = 0;
 float finalTextY = 0;
 float creditIncrement = 0.75;
 void credits() {
-  background(loadImage("bg.jpg"));
-  fill(#ff0000);
+  // background(brooklynCollegeBackgroundImage);
+  background(brickBackgroundImage);
+  fill(#ffffff);
   textAlign(CENTER);
   textFont(f, 30);
 
@@ -532,7 +545,7 @@ void credits() {
   if (finalTextY > height/2) {
     creditY += creditIncrement;
     finalTextY -= creditIncrement;
-  } 
+  }
   else
     backBtn.setVisible(true);
 }
@@ -607,14 +620,14 @@ void createObstacles() {
       int randomY = (int)(random(1, 6));
 
       randomPosition = tileMap[randomX][randomY];
-    } 
+    }
     while (obstacles.contains (new Obstacle (randomPosition)));
 
     // int randomIndex = (int)(random(0, allAvailableTilesOnMap.size()));
     // PVector randomPosition = allAvailableTilesOnMap.get(randomIndex);
     allAvailableTilesOnMap.remove(randomPosition);
 
-    if (levelNumber < 4) 
+    if (levelNumber < 4)
       obstacles.add(new Obstacle(randomPosition, grassImages.get(levelNumber-1)));
     else
       obstacles.add(new Obstacle(randomPosition, obstacleImages.get(i)));
@@ -667,7 +680,7 @@ public void customGUI() {
 
 public void startGame() {
   println("started");
-  background(#0000ff); 
+  background(#0000ff);
 
   // WIN SCENE VARIABLES RESET
   wsCounter = 0;
@@ -713,12 +726,12 @@ void writeTopScores(int level) {
     String[] tempScores = new String[scores.length];
     for (int i = 0; i < scores.length-1; i++) {
       tempScores[i] = scores[i];
-    } 
+    }
     tempScores[tempScores.length-1] = str(moves);
     for (int i = 0; i < tempScores.length; i++) {
       writer.print(tempScores[i]+",");
     }
-  } 
+  }
   else {
     writer.print(moves+",");
   }
@@ -731,21 +744,21 @@ void readTopScores(int level) {
   reader = createReader(dataPath("topScores"+level+".txt"));
   try {
     line = reader.readLine();
-  } 
+  }
   catch (IOException e) {
     e.printStackTrace();
     line = null;
   }
   if (line != null) {
     scores = split(line, ",");
-  } 
+  }
   else {
     scores = new String[0];
   }
 }
 
 void showMenu() {
-  background(loadImage("bg.jpg"));
+  background(brooklynCollegeBackgroundImage);
 
   if (where.equals("credits")) {
     credit.pause();
@@ -756,7 +769,7 @@ void showMenu() {
     song.pause();
     song.cue(0);
     theme.loop();
-  } 
+  }
   else {
     score1.setVisible(false);
     score2.setVisible(false);
@@ -882,7 +895,7 @@ int stunTimer = 0;
 void stunTheEnemies() {
   if (stunTimer == 150) {
     stunTimer = 0;
-    stunEnemies = false; 
+    stunEnemies = false;
     squirrel = null;
     player.setInvincible(false);
     return;
@@ -907,7 +920,7 @@ void keyPressed() {
   case 'r':
   case 'R':
     //    if (!where.equals("menu") && !where.equals("scores")) {
-    //      
+    //
     //      resetGame();
     //    }
     break;
